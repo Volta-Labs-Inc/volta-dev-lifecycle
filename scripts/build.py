@@ -227,6 +227,9 @@ def guide(metas: dict) -> str:
 
           <h2>Versions</h2>
           <p>Each skill carries its own version. What changed in each release is in the {link(f"{REPO_URL}/blob/main/CHANGELOG.md", "changelog")}, and new releases appear on the {link(f"{REPO_URL}/releases", "releases page")}.</p>
+
+          <h2>Licence</h2>
+          <p>MIT. You may use, change and share these skills on any work, as long as the copyright notice stays with them. The full text is in the {link(f"{REPO_URL}/blob/main/LICENSE", "licence file")}.</p>
         </div>
       </article>
     </main>

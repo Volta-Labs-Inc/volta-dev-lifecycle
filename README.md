@@ -57,3 +57,7 @@ Both run offline, against a stand-in for GitHub and throwaway local repositories
 4. Run the tests above and `python3 scripts/build.py`, which rebuilds `dist/*.zip` and `docs/index.html`.
 5. Commit, push, then publish the release: `gh release create v<VERSION> dist/*.zip`.
 6. Republish the guide with Volta's `/doc` skill: `~/.claude/skills/doc/scripts/publish.sh docs/index.html builders/ai-development-lifecycle`.
+
+## Licence
+
+MIT. Use, change and share these skills on any work, keeping the copyright notice. See `LICENSE`.
