@@ -10,15 +10,16 @@ Anyone can read everything committed here. Never commit customer names, customer
 
 1. Edit the skill under `skills/<name>/`. Keep the skills side by side: `/document`, `/orchestrate` and `/start-work` find the contract script at `../scope/scripts/contract.py`.
 2. Steps that need Volta's own systems start with a plain condition (for example, "If you have Volta's systems…") so the skill still works without them. Keep every new Volta-only step that way.
-3. Run the tests. Both must report 0 failed:
+3. Page templates ship plain, with no Volta logo or brand colours. Any new page template gets the same Volta-only branding step the problem and solution briefs have, run after the page check passes, so Volta's copies are branded and everyone else's stay plain.
+4. Run the tests. Both must report 0 failed:
 
    ```bash
    bash skills/scope/scripts/contract.test.sh
    bash skills/ship-it/campsite.test.sh
    ```
 
-4. Run `python3 scripts/build.py`, which rebuilds `dist/*.zip` and `docs/index.html`, then `python3 scripts/build.py --check`.
-5. Follow the README's "Changing a skill" section for versions, the changelog and the release.
+5. Run `python3 scripts/build.py`, which rebuilds `dist/*.zip` and `docs/index.html`, then `python3 scripts/build.py --check`.
+6. Follow the README's "Changing a skill" section for versions, the changelog and the release.
 
 ## Files that stay off this repository
 

@@ -76,7 +76,7 @@ Volta-only: needs Volta's systems (`outwork`, context maps, the Artifact tool, t
      - **Systems it touches:** which systems, and the access the builder will need.
      - **Guardrails:** what the customer asked for, such as nothing posting without approval.
 4. Leave every builder section, and the Value and Viability rows, as placeholders. Don't write the approach, even if you have one in mind. Anything the builder should know goes in the hand-over message as a fact, not as a suggested solution.
-5. Add a set-up row to the change log. Hand the builder the page as an HTML file, with the problem brief, and tell them to run `/solution-brief` on it.
+5. Add a set-up row to the change log and apply Volta branding (see Build and check rules). Hand the builder the page as an HTML file, with the problem brief, and tell them to run `/solution-brief` on it.
 
 ## Guide (builder)
 
@@ -132,7 +132,7 @@ Volta-only: needs Volta's systems (the Artifact tool, context maps, `/log`, `/pr
 4. Decide:
    - **Send back:** add a change log row with the questions, keep it a Draft, and send the file to the builder. Their next Guide run starts from the questions.
    - **Approve:** this needs every 1.0 condition. Write `Approved <date>` under the Volta owner, set the version to `1.0`, and run the check until it passes.
-5. Publish with the Artifact tool as a private page, icon `document`. Add a row to the live pages table in the project's `context-map.md` (page name, link, what it holds, "Use `/solution-brief` to update"). Record it with `/log`. Don't commit unless the user asks.
+5. Apply Volta branding (see Build and check rules), then publish with the Artifact tool as a private page, icon `document`. Add a row to the live pages table in the project's `context-map.md` (page name, link, what it holds, "Use `/solution-brief` to update"). Record it with `/log`. Don't commit unless the user asks.
 6. Hand back the link, what stands between the brief and 1.0 (including the problem brief's status), and one next step. After approval, that step is `/scope` on increment 1, linking the brief.
 7. Once the brief is at 1.0, send the builder a copy they can open, because they can't open the private page: the approved 1.0 HTML file, or a docs.voltaeffect.com review copy made with `/doc` where Volta uses it. Tell them this copy is what `/scope` reads.
 
@@ -142,12 +142,13 @@ Volta-only: needs Volta's systems (the Artifact tool, context maps, `/log`, `/pr
 2. Apply sourced changes: test results, verification evidence, and links to `/scope` issues. Those don't need re-approval.
 3. A change to the approach, a risk rating, the success definition or a constraint on a 1.0 brief goes back to Draft and through Review. If `/scope` issues already exist, list them in the hand-back, because their product contracts may now rest on the wrong approach.
 4. If the highest risk proves real, don't switch approach quietly. Add a change log row with the result, move the fallback into the approach, and send it back through Review.
-5. Bump the version and add a change log row only when the page's content changed. Run the check. If you have Volta's systems and the brief is published, publish to the same link; otherwise save the file locally and send it on.
+5. Bump the version and add a change log row only when the page's content changed. Run the check. If you have Volta's systems, apply Volta branding, and if the brief is published, publish to the same link; otherwise save the file locally and send it on.
 
 ## Build and check rules
 
 - Keep the template's styling, sections and order exactly. Change only the placeholders, and delete the template comments.
 - For gaps use `<span class="tbc">[short label]</span>`, or `TBD` for a person. Put attributions in `<span class="said">(Mark, 21 Oct)</span>`.
+- **Volta branding (Volta-only).** The template is deliberately plain. If you have Volta's systems (`$OUTWORKOS_ROOT/brand/apply_brand.py` exists), run `python3 "$OUTWORKOS_ROOT/brand/apply_brand.py" <file>` after the page check passes and before you publish or hand over the file. It adds Volta's wordmark, header line and accent colour, and the page check ignores it. Without Volta's systems, skip this: the plain page is the finished page.
 - `bash scripts/check_brief.sh <file>` checks the structure, the four options and the four risks, unfilled placeholders, the approach paragraph's length, the verification rows, and the 1.0 conditions. It can't judge whether the reasoning holds up, so read the page too.
 
 ## What this skill never does
