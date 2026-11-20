@@ -168,6 +168,23 @@ built become recorded open questions.
 > contract say so? When it reuses an existing authorized path without changing its audience,
 > verify that claim without turning a broader access audit into feature scope.
 
+### Misreading
+
+Run this lens on every contract, light or full, as part of the same review pass.
+
+> Try to misread every `SR-*` and `AC-*`. For each one, look for two reasonable people, such as
+> the builder and the customer, who could read it differently and disagree about whether it was
+> met. Look for subjective or vague words ("fast", "easy", "clear", "appropriate", "most",
+> "improved", "regularly", "user-friendly"), quantities with no number, unit or tolerance,
+> undefined terms, conditions that are implied rather than stated, and words such as "it" or
+> "they" that could point at more than one thing. For each finding, quote the words, give the
+> two readings, and propose a rewrite that only one reading survives. Do not add behavior: a
+> rewrite may make a requirement measurable, but it may not widen it.
+
+A supported misreading is fixed in the wording before approval. When the fix needs a number or
+choice only the user can give, ask for it; never invent one. It is never a reason for a second
+review round.
+
 ### Assumption quality
 
 > Identify unsupported claims, invented certainty, solution-first framing, or requirements

@@ -24,6 +24,7 @@ Drafts are numbered `Draft 0.1`, `Draft 0.2` and so on, and may have gaps. A bri
   - **A negative impact of stated size:** a count of something going wrong, such as "12 late remittances a month".
   - **Money:** a dollar amount, such as penalties, write-offs, lost discounts or staff cost.
 - **Every cost figure and the baseline are verified.** That means checked against something beyond the first estimate: a measurement (timing a real run, a time log), the customer's records or system data, or the person who does the work confirming their own number in writing. The attribution on the page says how, such as "(timed, 13 Nov run)" or "(Renee, by email, 14 Nov)". Someone estimating another person's time is a lead, not a verification.
+- **The target and every Done means item have passed the misreading review** (Create, step 4), so the customer and the builder can't reasonably disagree about whether they were met.
 - **The customer has confirmed the page in writing.** Both "Prepared for" and the "Problem Lead" must confirm the problem, the baseline and the target. A reply that the page "looks comprehensive" confirms the page, but it doesn't verify an estimate inside it.
 
 If one kind of cost can't be found, leave it off the page rather than bracket it, as long as another kind is quantified.
@@ -139,6 +140,8 @@ bash scripts/check_one_page.sh <path-to-file>
 
 It checks that the page still matches the template, and checks for unfilled placeholders, the problem paragraph's length, internal vocabulary, the Done means layout and the printed page count. It can't judge the wording, so read the page yourself too. If it can't check the page count, publish anyway and tell the Volta owner.
 
+**Then run a misreading review of the target result and every Done means item.** Ask a reviewer with no access to this conversation (a fresh sub-agent where your tool has them; otherwise reread only the page yourself) to argue, for each one, how the customer and the builder could reasonably disagree about whether it was met. It looks for subjective or vague words ("faster", "easier", "most", "significant", "reliable", "improved"), a number with no unit, period or source, a target with no stated way to measure it, and terms the page doesn't define. For each supported finding, rewrite the words so only one reading survives, using a sourced value. If the fix needs a number only the Volta owner or customer can give, leave it as a visible gap and name it in the hand-back; never invent one.
+
 Publish with the Artifact tool as a private page, using the icon `document`. The first version is `Draft 0.1`, and the first change log row says which calls, emails and documents it came from.
 
 ### 5. Link it to the project
@@ -177,7 +180,7 @@ Volta-only: needs Volta's systems (context maps, the Artifact tool, the sources 
 3. Work out what has changed, each with its source: gaps you can now fill, numbers that moved, and anything now out of date. If the Volta owner told you what to change, that comes first.
 4. Apply the sourced changes. Fill a bracket only with a sourced value or their answer. Leave anything unclear as it is, and name it in the hand-back. Ask first, one question at a time, only when a change would alter the problem, target or definition of done on a version the customer has confirmed.
 5. If the page's content changed, bump the version and add a change log row at the top of the table, saying what changed and why, with the source. Use `Draft 0.2`, `Draft 0.3` and so on. Use `1.0` only when the brief meets **When a brief reaches 1.0**, then `1.1` and so on. If nothing on the page changed, don't bump the version or add a row. A customer confirming the page doesn't move it to 1.0 by itself: name what is still missing or unverified in the hand-back.
-6. Run the page check and publish to the same link, so the project's record stays valid.
+6. If the target or a Done means item changed, run the misreading review from Create step 4 on it. Run the page check and publish to the same link, so the project's record stays valid.
 7. Record the change with `/log`, then give the Volta owner the link and the list of changes, so they can reverse any of them. If a docs-site review copy exists, tell them it is now behind and offer to update it.
 
 **If the problem itself changes,** don't overwrite the page. Add a closing change log row saying what replaced it and why, then create a new brief for the new problem and link both from the project. That keeps a record of what the customer agreed to and why it moved.

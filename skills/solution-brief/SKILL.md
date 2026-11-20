@@ -47,6 +47,7 @@ Drafts are `Draft 0.1`, `Draft 0.2` and so on. A brief becomes `1.0` only when:
 - **Every element is filled in,** with no highlighted bracket and no `TBD`.
 - **The Technical Lead's requirements are recorded,** with who gave them and when.
 - **All four risks are rated** Low, Medium or High, with evidence. Every Medium or High risk has a test and a date.
+- **The verification rows and the target have passed the misreading review,** run by Volta at review.
 - **Every verification row is complete:** one Solved row, one Done row per Done means item, and at least one Safe row, each with a pass criterion, evidence, and who confirms it and when.
 - **The builder has submitted it and the Volta owner has approved it,** each with a date in the facts strip.
 
@@ -107,6 +108,8 @@ Work through the sections in this order, because each depends on the one before:
 
 Leave the Value and Viability rows as placeholders. Those are Volta's. If the builder has a view on them, put it in an open question.
 
+Before submitting, run a misreading review of the increments and every verification row. Use a reviewer with no access to this conversation (a fresh sub-agent where your tool has them; otherwise reread only the page). For each pass criterion, it argues how the builder and the person who confirms it could reasonably disagree about whether it passed: subjective or vague words ("works", "fast", "most", "reliable", "smoothly"), a number with no unit, period or source, or a criterion with no stated way to check it. Show the builder each supported finding and ask them for the measurable version; don't write it for them. If the target formula itself could be misread, don't change it, because Volta copied it from the problem brief: add it to the open questions.
+
 When every builder section is filled in, run the check if the builder can run bash (`bash scripts/check_brief.sh <file>` from this skill's folder). Fix what it reports in the builder's sections. Write `Submitted <date>` under the builder's name, add a change log row, save the page as a local HTML file (don't publish it), and tell the builder to send the file back to the Volta owner.
 
 ## Review (Volta)
@@ -119,6 +122,7 @@ Volta-only: needs Volta's systems (the Artifact tool, context maps, `/log`, `/pr
    - a "why it moves the metric" that doesn't connect to the root cause;
    - feasibility or usability rated Low with no evidence;
    - verification criteria that can't fail;
+   - any pass criterion, increment or target wording that the builder and the customer could read differently. Run the misreading review from Guide mode again with a fresh reviewer rather than trusting the builder's own pass, and turn each supported finding into a question. If the target formula is the problem, it is fixed in the problem brief first, through `/problem-brief` Update;
    - a Safe row missing for a protection the security constraint needs.
 3. Rate **Value** and **Viability** with evidence. For a fuller assessment, `/problem-risks` uses the same four risks.
    - **Value:** does this approach move the confirmed target, for the people who have the problem, by enough to matter?

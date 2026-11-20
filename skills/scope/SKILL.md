@@ -337,6 +337,8 @@ an instructed verdict.
 - **Light:** try to prove that hidden scope, an unhandled user or failure, or another delivery
   surface makes light unsafe.
 - **Full/grill:** apply scope necessity, product completeness, and assumption quality.
+- **Every depth:** apply the misreading lens to each `SR-*` and `AC-*`, so no requirement uses
+  subjective wording that the builder and the customer could read differently.
 
 For every user-facing contract, also try to disprove four claims: the milestone preserves the
 literal outcome, the approved experience matches the requirements, the adjacent primary job
