@@ -1,0 +1,12 @@
+version: 1
+kind: project
+project: volta-dev-lifecycle
+harnesses:
+  claude: true
+  codex: true
+  opencode: false
+# Public repo: the skills and their scripts need no credentials, databases or
+# MCP servers; git and the gh CLI do all the work.
+secrets: []
+databases: []
+mcps: []
