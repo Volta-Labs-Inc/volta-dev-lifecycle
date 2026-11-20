@@ -1,0 +1,83 @@
+{
+  "skill_name": "document",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/document issue #123 as a light delivery contract for the linked repository.",
+      "expected_output": "Reads the product contract from the issue with contract.py read, runs the code-drift comparison from its scoped-at commit over the paths behind its Relies on list, produces a compact delivery and proof matrix with a drift report, runs a light challenge, writes the section with contract.py write --section delivery --product-fingerprint, and treats light as documentation depth rather than a test exemption.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "/document grill Turn the approved delegated-access scope into developer issues.",
+      "expected_output": "Performs technical reconnaissance and three-lens grill review before deciding full versus epic, with explicit frontend, backend, data, and runtime proof.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "File a GitHub issue for this settled database index improvement. It does not change product behavior.",
+      "expected_output": "Uses a technical scope basis, avoids inventing a product requirement, and defines proportionate database and operational proof.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Create the developer issue, but the product contract still says it is undecided whether administrators can bypass approval.",
+      "expected_output": "Stops technical planning and returns the material product decision to scope instead of choosing it in the delivery contract.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Start implementing GitHub issue 42 now.",
+      "expected_output": "Does not use document; routes to orchestrate (whose workers run start-work) because the request is implementation rather than issue design.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Fix a typo in this comment and commit it.",
+      "expected_output": "Does not create a delivery issue unless documentation is requested; this is a direct trivial change and publication request.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "Document adding an Archive checked button to each inbox grouping. It should send that grouping's checked email IDs through the existing approved Gmail archive action and show the result.",
+      "expected_output": "Keeps the delivery light and within one pull request because the same user, account, and approved operation gain only a new trusted entry point, defines focused UI-to-Gmail proof, and defers unrelated crash recovery, cross-process coordination, permission migration, and new journaling unless the change materially worsens those risks.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "While documenting a small UI entry point to an existing approved action, a reviewer discovers a reliability weakness in the pre-existing action that affects every current caller.",
+      "expected_output": "Classifies the weakness as pre-existing, records it as deferred follow-up by default, and does not inflate the current delivery contract unless the new entry point materially increases exposure or the user explicitly expands scope.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "/document The approved meeting-sharing outcome lets the requester select particular people and create a link that anyone can open without signing in. Keep the existing Meetings workflow usable.",
+      "expected_output": "First verifies that the issue's product contract has an approved named milestone, completion semantics, risk posture, and experience artifact; refuses planning and returns to scope if the public link was silently deferred, the wireframe is absent, or GitHub would need to choose the entry point; otherwise preserves Upcoming meetings, implements the one approved recording-level sharing control, starts from the simplest complete delivery, justifies every new security layer against credible incremental risk, keeps optional hardening deferred, and requires real desktop and narrow browser proof for named sharing, signed-out access, opening two different links successively, revocation, and the unchanged Meetings recording job. It never lets a partial issue close the overall outcome or lets the delivery contract supersede the product contract.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "/document The approved scope makes published event listings readable without login. Draft listings and every write remain staff-only. The scope, experience artifact, and milestone are current and approved. Prepare the developer issue for review.",
+      "expected_output": "Plans a positive anonymous read of published listings, negative public reads of drafts, and negative non-staff writes, based on the declared audience. Does not require all anonymous access to fail or narrow the approved public experience. Prepares the issue without writing it before exact approval.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "/document Prepare one issue to restore the exact approved Settings spelling. The interaction and layout stay the same. Existing navigation tests already cover the control and its destination; a direct browser check can verify the corrected text.",
+      "expected_output": "Uses a settled technical scope, reuses meaningful navigation coverage, and specifies direct verification of the correction without inventing a new prototype or a source-text test. Keeps required repository and browser checks, and does not plan a broad new test suite.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "/document The first review found a missing failure path and the draft was corrected. The second review confirms that path is covered and offers only alternate wording. Finish the issue preview.",
+      "expected_output": "Records the wording preference as non-blocking, keeps the two-round review budget, and proceeds to the exact issue preview without commissioning a third review. Does not waive any actual unresolved safety or delivery blocker.",
+      "files": []
+    },
+    {
+      "id": 13,
+      "prompt": "/document Restore the approved Save behavior: the form should update the selected record, but a regression currently updates a different record. The intended product behavior and interface are already settled.",
+      "expected_output": "Uses the settled product intent without reopening interface design, but plans meaningful failing/passing behavior coverage and a runtime probe that proves the selected record changed and the other record did not. Does not treat a runtime bug fix as a copy-only correction or waive access proof when applicable.",
+      "files": []
+    }
+  ]
+}

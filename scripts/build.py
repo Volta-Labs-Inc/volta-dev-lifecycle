@@ -1,0 +1,271 @@
+#!/usr/bin/env python3
+"""Build the download zips and the guide page for the Volta AI Development Lifecycle.
+
+Reads each skill's name, version and description from its SKILL.md, then writes:
+  dist/<skill>-<version>.zip             one per skill, the skill folder at the top level
+  dist/volta-dev-lifecycle-<version>.zip all eight skill folders side by side
+  docs/index.html                        the guide, linking to the GitHub release downloads
+
+Standard library only. Zips are reproducible: same files in, same bytes out.
+
+Usage: python3 scripts/build.py [--check]
+  --check  build into a temporary folder and fail if docs/index.html is out of date.
+"""
+from __future__ import annotations
+
+import html
+import re
+import sys
+import tempfile
+import zipfile
+from pathlib import Path
+
+ROOT = Path(__file__).resolve().parent.parent
+SKILLS = ROOT / "skills"
+REPO = "Volta-Labs-Inc/volta-dev-lifecycle"
+RELEASE_VERSION = (ROOT / "VERSION").read_text().strip()
+RELEASE_URL = f"https://github.com/{REPO}/releases/download/v{RELEASE_VERSION}"
+
+# Lifecycle order, the stage each skill belongs to, a plain-English summary for the guide,
+# and the other skills it needs installed alongside it.
+LIFECYCLE = [
+    ("problem-brief", "1 · Problem", "Writes the one-page Problem Brief a customer confirms: the problem we propose to solve in a first quarter, how we will measure it and what done means. Volta-run.", []),
+    ("solution-brief", "2 · Solution", "Records the approach we chose for that problem and why it beat the alternatives, what success means for the builder, the riskiest assumption and the increments to build. Its Guide mode works for any builder; set-up and review are Volta-run.", []),
+    ("grill-me", "Helper", "Interviews you one question at a time about a plan you already have, recommends an answer for each open decision and pushes back on weak ones. Use it at any stage.", []),
+    ("scope", "3 · Scope", "Writes the product contract on the work's GitHub issue: the outcome, who it is for, the boundaries and numbered requirements. It says what, never how.", []),
+    ("document", "4 · Plan", "Writes the delivery contract under it: how the change will be built, and the tests and checks that prove each requirement is met.", ["scope"]),
+    ("orchestrate", "5 · Build", "Runs one or more builder agents on an approved issue, re-checks their proof independently, and is your single point of contact until the work is verified.", ["scope", "document", "start-work"]),
+    ("start-work", "5 · Build", "What each builder agent runs: builds against the two contracts, test-first, and reports proof for every requirement. You rarely call it yourself.", ["scope", "document"]),
+    ("ship-it", "6 · Ship", "Runs the security checks, commits, opens and merges the pull request, cleans up the branch, then confirms the change works in production.", ["document"]),
+]
+
+EXCLUDE_NAMES = {".DS_Store", "__pycache__", ".pytest_cache"}
+FIXED_TIME = (2026, 1, 1, 0, 0, 0)
+
+
+def frontmatter(skill: str) -> dict:
+    text = (SKILLS / skill / "SKILL.md").read_text()
+    m = re.match(r"^---\n(.*?)\n---\n", text, re.S)
+    if not m:
+        sys.exit(f"{skill}/SKILL.md has no frontmatter")
+    meta = {}
+    for line in m.group(1).splitlines():
+        km = re.match(r"^([A-Za-z_-]+):\s*(.*)$", line)
+        if km:
+            value = km.group(2).strip()
+            if len(value) >= 2 and value[0] == value[-1] and value[0] in "\"'":
+                value = value[1:-1]
+            meta[km.group(1)] = value
+    for key in ("name", "version", "description"):
+        if not meta.get(key):
+            sys.exit(f"{skill}/SKILL.md frontmatter is missing '{key}'")
+    if meta["name"] != skill:
+        sys.exit(f"{skill}/SKILL.md says name '{meta['name']}'")
+    return meta
+
+
+def files_of(folder: Path):
+    for path in sorted(folder.rglob("*")):
+        if any(part in EXCLUDE_NAMES for part in path.relative_to(SKILLS).parts):
+            continue
+        if path.is_file():
+            yield path
+
+
+def write_zip(target: Path, folders: list) -> None:
+    with zipfile.ZipFile(target, "w", zipfile.ZIP_DEFLATED) as zf:
+        for folder in folders:
+            for path in files_of(folder):
+                info = zipfile.ZipInfo(str(path.relative_to(SKILLS)), FIXED_TIME)
+                info.compress_type = zipfile.ZIP_DEFLATED
+                mode = 0o755 if path.stat().st_mode & 0o111 else 0o644
+                info.external_attr = (0o100000 | mode) << 16
+                zf.writestr(info, path.read_bytes())
+
+
+GUIDE_URL = "https://docs.voltaeffect.com/builders/ai-development-lifecycle"
+REPO_URL = f"https://github.com/{REPO}"
+
+# The Volta docs house style, copied from the /doc skill's templates/volta-doc.html.
+STYLE = """
+    /* Volta docs house style — layout from releases/ai-productivity-launch; colours from the Volta design system (Sept 28, 2026). */
+    :root { color-scheme: light; --ink: #0A0A0A; --muted: #616161; --accent: #6C5CFE; --line: #E0E0E0; --tint: #F5F5F5; }
+    * { box-sizing: border-box; }
+    html { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: #fff; }
+    body { margin: 0; }
+    a { color: var(--accent); text-underline-offset: 4px; overflow-wrap: anywhere; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible, button:focus-visible { outline: 3px solid var(--accent); outline-offset: 5px; }
+    .page { max-width: 1062.5px; margin: 0 auto; padding: 34px 36px 64px; }
+    .masthead { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 26px; }
+    /* Header rule: 4px, solid ink on the left, fading into the Volta rainbow (always violet to yellow, left to right) on the right half */
+    .masthead::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+      background:
+        linear-gradient(90deg, var(--ink) 0%, var(--ink) 38%, rgba(10, 10, 10, 0) 62%),
+        linear-gradient(90deg, #6C5CFE 45%, #3998F3 56%, #05D4E8 67%, #FF7C64 83.5%, #FF9345 89%, #FFBB0E 100%);
+      -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    .brand { font-size: 28px; font-weight: 800; letter-spacing: -.06em; color: var(--ink); text-decoration: none; }
+    .document-type { font-size: 13px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+
+    /* Notice: embargo, draft-for-review, status or date box near the top */
+    .notice { margin: 30px 0 26px; border-left: 3px solid var(--accent); padding: 13px 18px; background: var(--tint); font-size: 14px; line-height: 1.6; }
+    .notice > strong:first-child { display: block; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; }
+    .notice p { margin: 0 0 8px; } .notice p:last-child { margin: 0; }
+
+    h1 { margin: 0; font-size: clamp(32px, 4.8vw, 46px); line-height: 1.12; letter-spacing: -.035em; font-weight: 730; }
+    main > article:first-child { margin-top: 30px; } /* spacing when there is no notice box */
+    .subhead { margin: 21px 0 34px; font-size: 21px; line-height: 1.5; color: var(--muted); }
+
+    /* Body copy */
+    .copy { font-size: 18px; line-height: 1.75; }
+    .copy p { margin: 0 0 22px; }
+    .copy h2 { font-size: 24px; line-height: 1.25; letter-spacing: -.02em; font-weight: 720; margin: 44px 0 14px; }
+    .copy h3 { font-size: 18px; line-height: 1.4; font-weight: 700; margin: 30px 0 8px; }
+    .copy ul, .copy ol { padding-left: 24px; margin: 0 0 26px; }
+    .copy li { padding-left: 7px; margin-bottom: 12px; }
+    .copy .spaced li { margin-bottom: 22px; }
+    .dateline { font-weight: 650; }
+
+    /* Tables: wrap in .table-wrap so wide tables scroll on phones instead of the page */
+    .table-wrap { overflow-x: auto; margin: 0 0 28px; }
+    table { width: 100%; min-width: 520px; border-collapse: collapse; font-size: 15.5px; line-height: 1.55; }
+    th, td { text-align: left; vertical-align: top; padding: 11px 12px; border-bottom: 1px solid var(--line); }
+    thead th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 650; border-bottom: 2px solid var(--ink); }
+    tbody th { font-weight: 650; }
+
+    /* Closing sections: About, Contact, Sources */
+    .details { border-top: 1px solid var(--line); margin-top: 34px; padding-top: 26px; }
+    .details h2 { font-size: 16px; line-height: 1.4; margin: 0 0 10px; font-weight: 700; }
+    .details p, .details li, address { font-size: 16px; line-height: 1.7; }
+    .details ul { padding-left: 22px; margin: 0; }
+    address { font-style: normal; }
+    .endmark { margin: 32px 0; font-size: 14px; color: var(--muted); }
+
+    footer { display: flex; align-items: center; justify-content: space-between; gap: 20px; border-top: 1px solid var(--line); padding-top: 20px; font-size: 12px; color: var(--muted); }
+    button { font: inherit; border: 1px solid var(--line); padding: 10px 14px; border-radius: 4px; background: #fff; color: var(--ink); cursor: pointer; }
+    button:hover { background: var(--tint); }
+
+    @media (max-width: 560px) { .page { padding: 23px 22px 40px; } .masthead { padding-bottom: 21px; } .document-type { font-size: 11px; } .notice { margin-top: 24px; } .subhead { font-size: 19px; margin-bottom: 28px; } .copy { font-size: 17px; line-height: 1.7; } .copy h2 { font-size: 21px; } }
+    @media print { @page { margin: 18mm; } .page { max-width: none; padding: 0; } html { font-size: 11pt; } h1 { font-size: 27pt; } .copy { font-size: 11pt; line-height: 1.5; } .copy h2 { font-size: 15pt; } .subhead { font-size: 13pt; } .details p, .details li, address, table { font-size: 10pt; } footer { display: none; } .notice { background: none; } a { color: inherit; } h1, h2, h3, .masthead { break-after: avoid; } address, tr { break-inside: avoid; } p { orphans: 3; widows: 3; } .table-wrap { overflow: visible; } table { min-width: 0; } }
+    .version { color: var(--accent); font-weight: 650; white-space: nowrap; }
+    .button { display: inline-block; background: var(--ink); color: #fff; text-decoration: none; font-weight: 650; padding: 12px 18px; border-radius: 4px; }
+    .button:hover { background: #333; }
+    pre { background: var(--tint); padding: 14px 18px; overflow-x: auto; font-size: 15px; line-height: 1.5; margin: 0 0 22px; }
+    code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .9em; }
+"""
+
+
+def link(href: str, text: str) -> str:
+    return f'<a href="{html.escape(href)}" target="_blank" rel="noopener noreferrer">{text}</a>'
+
+
+def guide(metas: dict) -> str:
+    e = html.escape
+    rows = []
+    for name, stage, summary, needs in LIFECYCLE:
+        meta = metas[name]
+        zip_name = f"{name}-{meta['version']}.zip"
+        needs_html = f"<br><small>Install with: {', '.join(e(n) for n in needs)}</small>" if needs else ""
+        rows.append(
+            f'<tr><th scope="row">{e(stage)}</th>'
+            f'<td><strong>{link(f"{REPO_URL}/tree/v{RELEASE_VERSION}/skills/{name}", "/" + e(name))}</strong></td>'
+            f"<td>{e(summary)}{needs_html}</td>"
+            f'<td><span class="version">v{e(meta["version"])}</span></td>'
+            f'<td>{link(f"{RELEASE_URL}/{zip_name}", "Download")}</td></tr>'
+        )
+    set_zip = f"volta-dev-lifecycle-{RELEASE_VERSION}.zip"
+    return f"""<!doctype html>
+<html lang="en-CA">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Volta AI Development Lifecycle | Guide</title>
+  <meta name="description" content="Eight agent skills that take customer work from an agreed problem to a verified change in production, with downloads.">
+  <link rel="canonical" href="{GUIDE_URL}">
+  <style>{STYLE}  </style>
+</head>
+<body>
+  <div class="page">
+    <header class="masthead">
+      <a class="brand" href="https://voltaeffect.com" aria-label="Volta home" target="_blank" rel="noopener noreferrer">VOLTA</a>
+      <span class="document-type">Guide</span>
+    </header>
+    <main>
+      <article aria-labelledby="doc-title">
+        <h1 id="doc-title">Volta AI Development Lifecycle</h1>
+        <p class="subhead">Eight agent skills that take a piece of customer work from an agreed problem to a verified change in production. Version {e(RELEASE_VERSION)}.</p>
+        <div class="copy">
+          <p>Each skill hands its result to the next, so use them in order: problem brief, solution brief, scope, document, orchestrate (which runs start-work for you), then ship it. Grill me is a helper you can bring in at any stage to stress-test a plan.</p>
+          <p>{link(f"{RELEASE_URL}/{set_zip}", "Download all eight")} or browse the source on {link(REPO_URL, "GitHub")}.</p>
+
+          <h2>The skills</h2>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Stage</th><th scope="col">Skill</th><th scope="col">What it does</th><th scope="col">Version</th><th scope="col">Get it</th></tr></thead>
+              <tbody>
+                {(chr(10) + "                ").join(rows)}
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Install</h2>
+          <p>Unzip into your agent tool's skills folder, keeping the skill folders side by side: <code>~/.claude/skills/</code> for every project in Claude Code, or <code>.claude/skills/</code> inside one repository. Installing the full set is simplest, because several skills use files that ship with another one.</p>
+
+          <h2>What you need</h2>
+          <ul>
+            <li>Claude Code, Codex or another agent tool that loads skills from a folder and can run sub-agents. Grill me works anywhere, including the Claude app.</li>
+            <li>git, and the project in a GitHub repository, with the GitHub command line tool (<code>gh</code>) signed in to an account that can read and write its issues and pull requests.</li>
+            <li>Python 3 for the contract script. Nothing else to install.</li>
+            <li>The project's own test and build commands, written down in the repository so agents can find them.</li>
+            <li>Any credentials the project needs, provided the way the project documents. The skills never ask you to paste a secret into the chat.</li>
+          </ul>
+
+          <h2>Without Volta's systems</h2>
+          <p>Some steps use Volta's internal tools, such as its operating database, project context maps and task hub. Each of those steps says so and is skipped when the tool isn't there. Problem brief, and the set-up and review parts of solution brief, are run by Volta.</p>
+
+          <h2>Versions</h2>
+          <p>Each skill carries its own version. What changed in each release is in the {link(f"{REPO_URL}/blob/main/CHANGELOG.md", "changelog")}, and new releases appear on the {link(f"{REPO_URL}/releases", "releases page")}.</p>
+        </div>
+      </article>
+    </main>
+    <footer><span>Volta · Halifax, Nova Scotia</span><button type="button" onclick="window.print()">Print</button></footer>
+  </div>
+</body>
+</html>
+"""
+
+
+def main() -> int:
+    check = "--check" in sys.argv[1:]
+    metas = {name: frontmatter(name) for name, *_ in LIFECYCLE}
+    found = sorted(p.name for p in SKILLS.iterdir() if (p / "SKILL.md").is_file())
+    if found != sorted(metas):
+        sys.exit(f"skills/ holds {found}, the lifecycle lists {sorted(metas)}")
+
+    page = guide(metas)
+    if check:
+        current = (ROOT / "docs" / "index.html").read_text() if (ROOT / "docs" / "index.html").exists() else ""
+        if current != page:
+            print("docs/index.html is out of date: run python3 scripts/build.py")
+            return 1
+        print("docs/index.html is current")
+        return 0
+
+    dist = ROOT / "dist"
+    dist.mkdir(exist_ok=True)
+    for old in dist.glob("*.zip"):
+        old.unlink()
+    for name, *_ in LIFECYCLE:
+        write_zip(dist / f"{name}-{metas[name]['version']}.zip", [SKILLS / name])
+    write_zip(dist / f"volta-dev-lifecycle-{RELEASE_VERSION}.zip", [SKILLS / n for n, *_ in LIFECYCLE])
+    (ROOT / "docs").mkdir(exist_ok=True)
+    (ROOT / "docs" / "index.html").write_text(page)
+    for z in sorted(dist.glob("*.zip")):
+        print(f"{z.relative_to(ROOT)}  {z.stat().st_size:,} bytes")
+    print("docs/index.html")
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

@@ -1,0 +1,77 @@
+{
+  "skill_name": "ship-it",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "/ship-it. Branch fix/42-navigation is clean and has two unpushed commits for issue 42. There is no PR. The required access proof is present and the security gate passes. This internal fix needs no release note.",
+      "expected_output": "Reviews the full branch and performs final verification, skips an empty commit and an unnecessary changelog question, pushes the existing work, and creates one PR. Does not stop with nothing to commit. Preserves the merge, production, cleanup, and issue-comment gates.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "/ship-it. Branch fix/42-navigation is clean. Its tip already matches open PR 77 and the remote branch. The current scope and required proofs are established; a required CI check remains pending.",
+      "expected_output": "Reuses PR 77, creates no empty commit or duplicate PR, and avoids an unnecessary push. Resumes checks and normal protected merging, reports pending requirements, and leaves cleanup deferred while the PR remains open. Production remains unverified and access checks are not counted before deployment.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "/ship-it. The feature build and tests passed earlier. I have now approved a release note that changes both CHANGELOG.md and the public changelog page. Finish shipping this release.",
+      "expected_output": "Applies only the approved release-note changes, then runs the selected build and tests against the final content before shipping. Does not rely on the pre-changelog pass or ask again about unchanged approved wording.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "/ship-it. PR 77 is merged and cleanup is complete. The deployment provider still reports the previous commit live. Read-only production access checks pass against that running version.",
+      "expected_output": "Reports production NOT_VERIFIED and release access NOT_RUN because the merged release is not deployed. Does not count checks on the older version as evidence for this release, post a VERIFIED comment, or report SHIP COMPLETED; posts NOT_VERIFIED naming the deployment gate. Ends with ARCHIVE THIS SESSION: NOT YET, naming the undeployed release as the open item.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "/ship-it issue 42 only. Its PR is merged, the deployed release and live behavior are verified, cleanup is CLEANED, and the verification comment is posted. Parent epic 40 still has issues 43 and 44 open.",
+      "expected_output": "Reports issue 42's release complete and the parent epic still in progress, with remaining work identified. Ends the requested task without starting siblings or requiring the user to approve ending the session.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "/ship-it. This branch has no PR and no unshipped commits, and its only untracked file is a known unrelated local cache.",
+      "expected_output": "Reports nothing to ship after confirming branch and provider state, leaves the cache alone, and creates no commit or PR. Does not treat the unrelated untracked file as issue work. Ends with the nothing-to-ship form of ARCHIVE THIS SESSION: YES, naming the cache as left alone.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "/ship-it. This branch's PR merged yesterday. The working tree is now clean, but I made another local commit on the branch after the merge.",
+      "expected_output": "Preserves the post-merge commit and reports that it needs a new branch. Does not classify the branch as cleanup-only, delete the work, or attempt to ship through the merged PR.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "/ship-it. PR 77 for issue 42 merged. The deployed release is identified, the behavior was exercised at the live URL for the whole acceptance scope, the security gate was N/A, campsite returned CLEANED, and the verification comment was posted and read back. Nothing is waiting on the user.",
+      "expected_output": "Reports SHIP COMPLETED. The last line of the reply is ARCHIVE THIS SESSION: YES, saying no further action is needed in this session. Does not archive the session itself.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "/ship-it. PR 77 is mergeable and auto-merge is enabled, but a required CI check is still running after the polling window.",
+      "expected_output": "Records the merge as pending and defers cleanup. The last line is ARCHIVE THIS SESSION: NOT YET, naming the pending required check and saying to re-run /ship-it from this branch once it merges. Never says YES or implies the session can close.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "/ship-it. PR 77 merged, production is verified for the full scope, campsite returned CLEANED, but posting the verification comment on issue 42 failed with a GitHub error.",
+      "expected_output": "Shows the full comment text so it can be posted by hand and does not report SHIP COMPLETED. The last line is ARCHIVE THIS SESSION: NOT YET, because the verification evidence exists only in this session; posting the comment clears it.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "/ship-it issue 42 only. Its PR merged, production is verified for the full scope, cleanup is CLEANED, and the verification comment is posted. Parent epic 40 still has issues 43 and 44 open.",
+      "expected_output": "Reports issue 42 complete and epic 40 still in progress with 43 and 44 named. The last line is ARCHIVE THIS SESSION: YES, because the open siblings are tracked on the parent issue and this session was asked to ship only issue 42. Does not start the siblings.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "/ship-it. The branch adds a row-level security migration. Issue 42 has no proof table and no advisor baseline, and I have not waived either.",
+      "expected_output": "Sets the security gate to BLOCKED and stops before committing, naming each missing check. The last line is ARCHIVE THIS SESSION: NOT YET, naming the missing access proof and saying that either the proof or the user's explicit waiver clears it. Never says YES.",
+      "files": []
+    }
+  ]
+}

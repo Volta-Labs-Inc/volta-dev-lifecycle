@@ -1,0 +1,95 @@
+{
+  "skill_name": "scope",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "We keep losing founders during onboarding. Help me define the product contract before anyone designs the fix.",
+      "expected_output": "Uses light scope discovery, produces product-facing SR and AC identifiers, runs one light challenge, avoids unnecessary draft-package ceremony before the GitHub write, and avoids implementation details.",
+      "files": []
+    },
+    {
+      "id": 2,
+      "prompt": "/scope grill We should let coaches act on behalf of founders. Pressure-test this and define the scope.",
+      "expected_output": "Uses full depth with the grill interview method, applies all three fresh-context review lenses in one bounded pass, and reconciles supported objections.",
+      "files": []
+    },
+    {
+      "id": 3,
+      "prompt": "Turn this dashboard idea into a PRD with a prototype, but don't file a GitHub issue yet.",
+      "expected_output": "Uses prototype mode after product framing and keeps the result at product scope without creating GitHub work.",
+      "files": []
+    },
+    {
+      "id": 4,
+      "prompt": "Update the product contract on issue #123 because the product decision changed. Keep the linked engineering work aligned.",
+      "expected_output": "Reads the existing product contract with contract.py read, previews the update, preserves stable identifiers, writes with --expect-fingerprint so a moved section is refused, and identifies the later document reconciliation need that the new fingerprint triggers.",
+      "files": []
+    },
+    {
+      "id": 5,
+      "prompt": "Implement GitHub issue 42 and prove it works locally.",
+      "expected_output": "Does not use scope; routes to orchestrate (whose workers run start-work) because product scope is already represented by an implementation issue.",
+      "files": []
+    },
+    {
+      "id": 6,
+      "prompt": "Document this settled database index change as a GitHub issue.",
+      "expected_output": "Does not create a product contract; routes the settled technical chore to document.",
+      "files": []
+    },
+    {
+      "id": 7,
+      "prompt": "/scope grill This has been a long discovery session and may compact soon. Preserve the complete approved contract and update the existing issue's product contract without losing any requirements.",
+      "expected_output": "Creates or reloads the durable draft package, checkpoints research and decisions, runs all three fresh-context lenses against the final fingerprint, obtains approval, writes with contract.py write --section product --expect-fingerprint, and reports the verified version and fingerprint from the read-back.",
+      "files": []
+    },
+    {
+      "id": 8,
+      "prompt": "The draft is approved, but this harness cannot start subagents. Put it on GitHub now.",
+      "expected_output": "Uses the deterministic contract.py create or write command without requiring a subagent and reports the read-back result it prints.",
+      "files": []
+    },
+    {
+      "id": 9,
+      "prompt": "A reviewer found a missing failure case after the draft was fingerprinted. Add it and finish the GitHub update.",
+      "expected_output": "Updates the draft, recomputes its fingerprint, invalidates prior review and approval receipts, reruns the bounded final-fingerprint review, obtains fresh approval, and only then runs the controlled write and reports its read-back.",
+      "files": []
+    },
+    {
+      "id": 10,
+      "prompt": "Add an Archive checked button to each grouping in our inbox review. When clicked, pass the checked email IDs from that card to the existing Gmail archive command and show what succeeded.",
+      "expected_output": "Sizes the probable remedy before planning, classifies this as light because it gives the same user a new trusted entry point to the existing approved archive path without expanding actor, account, operation, or provider-consent authority, keeps the contract to one delivery increment, and explicitly excludes a new journal, crash-recovery system, cross-process coordination, and permission migration unless evidence shows the increment materially worsens a current risk.",
+      "files": []
+    },
+    {
+      "id": 11,
+      "prompt": "Let every customer connect Gmail to our hosted product and allow their teammates to archive messages from a shared workspace.",
+      "expected_output": "Classifies this as full because the requested increment introduces new account authority, shared-workspace access decisions, multiple user journeys, and operational consequences; it does not force the work into light merely because archive behavior exists elsewhere.",
+      "files": []
+    },
+    {
+      "id": 12,
+      "prompt": "Scope a new button that calls an existing approved action. During review, we discover that the existing action also has a broader crash-recovery weakness unrelated to the button.",
+      "expected_output": "Classifies the weakness as a pre-existing risk by default, keeps it out of the current increment unless the button materially increases exposure, and requests explicit approval before adding a new recovery system to scope.",
+      "files": []
+    },
+    {
+      "id": 13,
+      "prompt": "/scope grill Let the person who requested a recorded meeting select particular people who attended and create a link that anyone can open without signing in. Keep the existing Meetings workflow usable.",
+      "expected_output": "Preserves selected-person sharing and no-login link sharing as parts of the original outcome; does not silently defer either or call a partial milestone complete; resolves whether selectable people are invitees or actual attendees, whether named recipients need accounts or notifications, who controls sharing, what content is exposed, and how legacy attendee visibility behaves; automatically uses prototype mode; obtains approval of a low- or high-fidelity artifact that preserves Upcoming meetings and places one coherent sharing entry point on the recording; records one named milestone, proportionate minimum controls, optional hardening, and a context-reset approval card before the GitHub write or document handoff.",
+      "files": []
+    },
+    {
+      "id": 14,
+      "prompt": "/scope Correct the settings tab from Setings to Settings, exactly as in our approved design. Its position, behavior, permissions, and surrounding journey stay the same. Keep this in conversation.",
+      "expected_output": "Treats the requested spelling correction as settled, records its source and the absence of a material experience change, and does not create a prototype, reopen the label choice, or create a draft package merely because an interface file changes. Keeps the check proportionate to the correction.",
+      "files": []
+    },
+    {
+      "id": 15,
+      "prompt": "/scope Rename the Archive button to Delete and move it into the primary action position. The underlying action still archives the selected messages.",
+      "expected_output": "Recognizes changed meaning and discoverability as material experience decisions, identifies the label/action mismatch, and requires an appropriate experience artifact and product approval. Does not apply the settled-correction exception just because the user supplied exact wording or the underlying action is unchanged.",
+      "files": []
+    }
+  ]
+}

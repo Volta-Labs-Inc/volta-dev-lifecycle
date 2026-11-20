@@ -1,0 +1,193 @@
+<title>{{CUSTOMER}} Solution Brief</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<style>
+  /* Volta docs house style (light), shared with the Problem Brief template. Single theme. */
+  :root { color-scheme: light; --ink: #0A0A0A; --muted: #616161; --accent: #6C5CFE; --line: #E0E0E0; --tint: #F5F5F5; --paper: #FFFFFF; }
+  * { box-sizing: border-box; }
+  html { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: var(--ink); background: var(--paper); }
+  body { margin: 0; background: var(--paper); color: var(--ink); }
+  a { color: var(--accent); text-underline-offset: 4px; overflow-wrap: anywhere; }
+  .page { max-width: 1062.5px; margin: 0 auto; padding-block: 34px 64px; padding-left: max(36px, env(safe-area-inset-left, 0px)); padding-right: max(36px, env(safe-area-inset-right, 0px)); }
+  .masthead { position: relative; display: flex; align-items: center; justify-content: space-between; gap: 20px; padding-bottom: 26px; }
+  .masthead::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 4px;
+    background:
+      linear-gradient(90deg, var(--ink) 0%, var(--ink) 38%, rgba(10, 10, 10, 0) 62%),
+      linear-gradient(90deg, #6C5CFE 45%, #3998F3 56%, #05D4E8 67%, #FF7C64 83.5%, #FF9345 89%, #FFBB0E 100%);
+    -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  .brand { font-size: 28px; font-weight: 800; letter-spacing: -.06em; color: var(--ink); text-decoration: none; }
+  .document-type { font-size: 13px; color: var(--muted); letter-spacing: .1em; text-transform: uppercase; }
+
+  article { margin-top: 30px; }
+
+  .k { font-size: 12px; letter-spacing: .1em; text-transform: uppercase; font-weight: 650; color: var(--muted); }
+  h1 { margin: 0; font-size: clamp(30px, 4.4vw, 42px); line-height: 1.12; letter-spacing: -.035em; font-weight: 730; text-wrap: balance; }
+
+  .facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(210px, 1fr)); margin: 22px 0 6px; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+  .facts > div { padding: 11px 16px 11px 0; display: grid; gap: 2px; min-width: 0; }
+  .facts .v { font-size: 16px; font-weight: 650; }
+  .facts .sub { font-size: 13.5px; color: var(--muted); }
+
+  .copy { font-size: 16.5px; line-height: 1.65; }
+  .copy p { margin: 0 0 14px; }
+  .copy h2 { font-size: 21px; line-height: 1.25; letter-spacing: -.02em; font-weight: 720; margin: 30px 0 10px; }
+
+  .tbc { color: var(--accent); font-weight: 650; }
+  .said { color: var(--muted); }
+
+  .rows { border-top: 2px solid var(--ink); margin: 0 0 14px; }
+  .rows > div { display: grid; grid-template-columns: 170px minmax(0, 1fr); gap: 16px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 15px; line-height: 1.5; }
+  .rows b { font-weight: 650; }
+
+  .formula { display: grid; grid-template-columns: .8fr 1.5fr 1.3fr 1fr 1fr; border-top: 2px solid var(--ink); border-bottom: 1px solid var(--line); margin: 0 0 8px; }
+  .formula > div { padding: 10px 14px 12px 0; display: grid; align-content: start; gap: 3px; min-width: 0; }
+  .formula .v { font-size: 17px; line-height: 1.3; font-weight: 680; letter-spacing: -.01em; }
+  .formula .sub { font-size: 13px; line-height: 1.4; color: var(--muted); }
+
+  ol.done { margin: 0 0 8px; padding: 0; list-style: none; counter-reset: c; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px 26px; font-size: 15px; line-height: 1.5; }
+  ol.done li { counter-increment: c; display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 6px; min-width: 0; }
+  ol.done li::before { content: counter(c); width: 22px; height: 22px; border-radius: 50%; border: 1.5px solid var(--accent); color: var(--accent); font-size: 12px; font-weight: 700; display: grid; place-items: center; margin-top: 1px; }
+
+  .table-wrap { overflow-x: auto; margin: 0 0 12px; }
+  table { width: 100%; min-width: 0; border-collapse: collapse; font-size: 15px; line-height: 1.5; }
+  th, td { text-align: left; vertical-align: top; padding: 8px 14px 8px 0; border-bottom: 1px solid var(--line); }
+  thead th { font-size: 12px; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); font-weight: 650; border-bottom: 2px solid var(--ink); }
+  tbody th { font-weight: 650; white-space: nowrap; }
+
+
+
+
+  @media (max-width: 760px) { .formula { grid-template-columns: 1fr 1fr; } ol.done { grid-template-columns: 1fr; } }
+  @media (max-width: 560px) { .page { padding-block: 23px 40px; padding-left: max(22px, env(safe-area-inset-left, 0px)); padding-right: max(22px, env(safe-area-inset-right, 0px)); } .masthead { padding-bottom: 21px; } .document-type { font-size: 11px; } .rows > div { grid-template-columns: 1fr; gap: 2px; } .formula { grid-template-columns: 1fr; } }
+  @media print {
+    @page { margin: 11mm 13mm; size: letter; }
+    .page { max-width: none; padding: 0; }
+    .masthead { padding-bottom: 12px; } .brand { font-size: 20px; } .document-type { font-size: 9pt; }
+    article { margin-top: 10px; }
+    h1 { font-size: 19pt; }
+    .facts { margin: 7px 0 2px; } .facts > div { padding: 4px 8px 4px 0; } .k { font-size: 7pt; } .facts .v { font-size: 9pt; } .facts .sub { font-size: 7.5pt; }
+    .copy { font-size: 9pt; line-height: 1.38; } .copy p { margin: 0 0 5px; } .copy h2 { font-size: 11pt; margin: 9px 0 3px; }
+    .rows { margin-bottom: 5px; } .rows > div { grid-template-columns: 112px minmax(0, 1fr); gap: 8px; padding: 2.5px 0; font-size: 8.3pt; line-height: 1.32; }
+    .facts { grid-template-columns: repeat(4, minmax(0, 1fr)); } ol.done { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .formula { grid-template-columns: .8fr 1.5fr 1.3fr 1fr 1fr; margin-bottom: 3px; } .formula > div { padding: 4px 8px 5px 0; } .formula .v { font-size: 9.5pt; } .formula .sub { font-size: 7.3pt; line-height: 1.25; }
+    ol.done { gap: 3px 16px; font-size: 8.3pt; line-height: 1.32; } ol.done li { grid-template-columns: 17px minmax(0, 1fr); gap: 3px; } ol.done li::before { width: 14px; height: 14px; font-size: 7pt; border-width: 1px; }
+    .table-wrap { overflow: visible; margin-bottom: 4px; } table { min-width: 0; font-size: 8.3pt; line-height: 1.3; } th, td { padding: 2.5px 8px 2.5px 0; } thead th { font-size: 7pt; }
+    a { color: inherit; }
+  }
+</style>
+
+<!-- Solution Brief template. Volta fills the set-up fields, the builder fills the rest, Volta adds the Value and Viability rows at review. Replace every placeholder in double braces. For anything unknown use <span class="tbc">[short label]</span>, or TBD for a person. Keep the sections and their order. -->
+<div class="page">
+  <header class="masthead">
+    <span class="brand">VOLTA</span>
+    <span class="document-type">Solution brief</span>
+  </header>
+  <main>
+    <article aria-labelledby="doc-title">
+      <h1 id="doc-title">{{HEADLINE_THE_APPROACH_IN_ONE_LINE}}</h1>
+
+      <div class="facts">
+        <div><span class="k">Problem brief</span><span class="v">{{PROBLEM_BRIEF_LINK_AND_VERSION}}</span><span class="sub">{{CUSTOMER_AND_PROBLEM_IN_A_FEW_WORDS}}</span></div>
+        <div><span class="k">Builder</span><span class="v">{{BUILDER_NAME_OR_TBD}}</span><span class="sub">{{AUTHOR_NOTE_SUBMITTED_WITH_DATE}}</span></div>
+        <div><span class="k">Volta owner</span><span class="v">{{VOLTA_OWNER_NAME}}</span><span class="sub">{{APPROVER_NOTE_APPROVED_WITH_DATE}}</span></div>
+        <div><span class="k">Version</span><span class="v">{{VERSION}}</span><span class="sub">{{VERSION_DATE}}</span></div>
+      </div>
+
+      <div class="copy">
+        <h2>What success means</h2>
+        <div class="formula">
+          <div><span class="k">Verb</span><span class="v">{{VERB}}</span></div>
+          <div><span class="k">Metric</span><span class="v">{{METRIC}}</span></div>
+          <div><span class="k">From</span><span class="v">{{FROM_VALUE}}</span><span class="sub">{{FROM_SOURCE}}</span></div>
+          <div><span class="k">To</span><span class="v">{{TO_VALUE}}</span><span class="sub">{{TO_NOTE}}</span></div>
+          <div><span class="k">By</span><span class="v">{{BY_MILESTONE}}</span><span class="sub">{{BY_DATE_NOTE}}</span></div>
+        </div>
+
+        <h2>The approach</h2>
+        <p>{{APPROACH_PARAGRAPH_150_WORDS}}</p>
+        <div class="rows">
+          <div><b>Why it moves the metric</b><span>{{WHAT_IT_CHANGES_ABOUT_THE_ROOT_CAUSE_AND_HOW_FAR_THE_METRIC_MOVES}}</span></div>
+        </div>
+
+        <h2>Options considered</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Option</th><th scope="col">Verdict</th><th scope="col">Why</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Do nothing</th><td>{{VERDICT}}</td><td>{{REASON}}</td></tr>
+              <tr><th scope="row">Use what they already have</th><td>{{VERDICT}}</td><td>{{REASON}}</td></tr>
+              <tr><th scope="row">Buy</th><td>{{VERDICT}}</td><td>{{REASON}}</td></tr>
+              <tr><th scope="row">Build</th><td>{{VERDICT}}</td><td>{{REASON}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Risks</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Risk</th><th scope="col">Owner</th><th scope="col">Rating</th><th scope="col">Evidence</th><th scope="col">Test, and when we'll know</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Value</th><td>{{VOLTA_OWNER}}</td><td>{{LOW_MEDIUM_HIGH}}</td><td>{{EVIDENCE}}</td><td>{{TEST_AND_DATE_OR_NONE_NEEDED}}</td></tr>
+              <tr><th scope="row">Viability</th><td>{{VOLTA_OWNER}}</td><td>{{LOW_MEDIUM_HIGH}}</td><td>{{EVIDENCE}}</td><td>{{TEST_AND_DATE_OR_NONE_NEEDED}}</td></tr>
+              <tr><th scope="row">Feasibility</th><td>{{BUILDER}}</td><td>{{LOW_MEDIUM_HIGH}}</td><td>{{EVIDENCE}}</td><td>{{TEST_AND_DATE_OR_NONE_NEEDED}}</td></tr>
+              <tr><th scope="row">Usability</th><td>{{BUILDER}}</td><td>{{LOW_MEDIUM_HIGH}}</td><td>{{EVIDENCE}}</td><td>{{TEST_AND_DATE_OR_NONE_NEEDED}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="rows">
+          <div><b>If the highest risk is real</b><span>{{WHAT_WE_DO_INSTEAD}}</span></div>
+        </div>
+
+        <h2>Constraints</h2>
+        <div class="rows">
+          <div><b>Security and privacy</b><span>{{DATA_IT_TOUCHES_AND_HOW_SENSITIVE}} {{WHO_MUST_NOT_REACH_IT}} {{TECHNICAL_LEAD_REQUIREMENTS_WITH_WHO_SAID_IT}}</span></div>
+          <div><b>Systems it touches</b><span>{{CUSTOMER_SYSTEMS_AND_ACCESS_NEEDED}}</span></div>
+          <div><b>Guardrails</b><span>{{GUARDRAILS_THE_CUSTOMER_ASKED_FOR}}</span></div>
+        </div>
+
+        <h2>Increments</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">#</th><th scope="col">Increment</th><th scope="col">Sprint</th><th scope="col">What it does for the metric</th><th scope="col">Scope issue</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">1</th><td>{{INCREMENT_1}}</td><td>{{SPRINT}}</td><td>{{METRIC_EFFECT}}</td><td>{{SCOPE_ISSUE_LINK_OR_NOT_YET}}</td></tr>
+              <!-- One row per increment. Each becomes one /scope run. Mark the increment that first moves the metric. -->
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Verification</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Criterion</th><th scope="col">Pass if</th><th scope="col">Evidence</th><th scope="col">Who confirms, when</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">Solved: target</th><td>{{TARGET_PASS_CRITERION_MEASURED_ON_THE_LIVE_SYSTEM}}</td><td>{{EVIDENCE}}</td><td>{{WHO_AND_WHEN}}</td></tr>
+              <tr><th scope="row">Done 1: {{SHORT_NAME}}</th><td>{{PASS_CRITERION}}</td><td>{{EVIDENCE}}</td><td>{{WHO_AND_WHEN}}</td></tr>
+              <tr><th scope="row">Safe 1: {{SHORT_NAME}}</th><td>{{PASS_CRITERION}}</td><td>{{EVIDENCE}}</td><td>{{WHO_AND_WHEN}}</td></tr>
+              <!-- One "Done N" row per Done means item on the problem brief, numbered to match, then one "Safe N" row per protection the approach depends on. If the approach touches no new data or access, keep one Safe row that says so and why. Criteria, not test steps: /document designs the tests. -->
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Open questions</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Question</th><th scope="col">Owner</th><th scope="col">Blocks scoping?</th></tr></thead>
+            <tbody>
+              <tr><td>{{QUESTION_OR_NONE}}</td><td>{{OWNER}}</td><td>{{YES_OR_NO}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Change log</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th scope="col">Version</th><th scope="col">Date</th><th scope="col">Change</th></tr></thead>
+            <tbody>
+              <tr><th scope="row">{{VERSION}}</th><td>{{VERSION_DATE}}</td><td>{{FIRST_CHANGE_FIRST_DRAFT_AND_ITS_SOURCES}}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </article>
+  </main>
+</div>
