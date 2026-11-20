@@ -18,7 +18,7 @@ This page exists because of what happened on an earlier engagement. The problem 
 
 Drafts are numbered `Draft 0.1`, `Draft 0.2` and so on, and may have gaps. A brief becomes `1.0` only when all of the following are true (Matt, 12 Nov 2026). This is definitive: don't move a brief to 1.0 because the customer says it looks right, or because the Volta owner or the record calls it agreed.
 
-- **Every element is filled in.** Nothing in a violet bracket and no `TBD` anywhere, including all three people.
+- **Every element is filled in.** Nothing in a highlighted bracket and no `TBD` anywhere, including all three people.
 - **The cost of the problem is objectively quantified** in at least one of these, each naming who gave it. "Takes hours", "a lot of rework" or "costly" is not a quantity.
   - **People's time:** hours, with who spends them and how often, such as "Renee, 8 hours every Friday".
   - **A negative impact of stated size:** a count of something going wrong, such as "12 late remittances a month".
@@ -164,7 +164,7 @@ Lead with the link. Then keep it to what the Volta owner needs in order to act, 
 You don't send anything, and the page itself makes no requests. The email does that, through `/email-composer`, so it needs to:
 
 - ask the economic buyer and the functional buyer to confirm or correct the problem, the starting number and the target. A clear yes is the step that was missing on that earlier engagement.
-- explain that `TBD` and violet brackets are what still needs filling in together.
+- explain that `TBD` and highlighted brackets are what still needs filling in together.
 
 The page is private, so a customer can't open its claude.ai link. Before anything goes out, publish a review copy on docs.voltaeffect.com with `/doc`, once the Volta owner asks for it. Keep that copy in step with later versions. Offer to draft the email, and offer to write the customer's answers back into the brief when they reply.
 

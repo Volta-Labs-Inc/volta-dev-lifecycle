@@ -44,7 +44,7 @@ Never copy the problem brief, requirements, acceptance examples or technical des
 Drafts are `Draft 0.1`, `Draft 0.2` and so on. A brief becomes `1.0` only when:
 
 - **The problem brief is at 1.0,** so the customer has confirmed the problem, the starting number and the target in writing.
-- **Every element is filled in,** with no violet bracket and no `TBD`.
+- **Every element is filled in,** with no highlighted bracket and no `TBD`.
 - **The Technical Lead's requirements are recorded,** with who gave them and when.
 - **All four risks are rated** Low, Medium or High, with evidence. Every Medium or High risk has a test and a date.
 - **Every verification row is complete:** one Solved row, one Done row per Done means item, and at least one Safe row, each with a pass criterion, evidence, and who confirms it and when.
