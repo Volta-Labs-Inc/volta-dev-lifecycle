@@ -148,6 +148,7 @@ STYLE = """
     @media (max-width: 560px) { .page { padding: 23px 22px 40px; } .masthead { padding-bottom: 21px; } .document-type { font-size: 11px; } .notice { margin-top: 24px; } .subhead { font-size: 19px; margin-bottom: 28px; } .copy { font-size: 17px; line-height: 1.7; } .copy h2 { font-size: 21px; } }
     @media print { @page { margin: 18mm; } .page { max-width: none; padding: 0; } html { font-size: 11pt; } h1 { font-size: 27pt; } .copy { font-size: 11pt; line-height: 1.5; } .copy h2 { font-size: 15pt; } .subhead { font-size: 13pt; } .details p, .details li, address, table { font-size: 10pt; } footer { display: none; } .notice { background: none; } a { color: inherit; } h1, h2, h3, .masthead { break-after: avoid; } address, tr { break-inside: avoid; } p { orphans: 3; widows: 3; } .table-wrap { overflow: visible; } table { min-width: 0; } }
     .version { color: var(--accent); font-weight: 650; white-space: nowrap; }
+    td:nth-child(2), td:nth-child(4), td:nth-child(5) { white-space: nowrap; }
     .button { display: inline-block; background: var(--ink); color: #fff; text-decoration: none; font-weight: 650; padding: 12px 18px; border-radius: 4px; }
     .button:hover { background: #333; }
     pre { background: var(--tint); padding: 14px 18px; overflow-x: auto; font-size: 15px; line-height: 1.5; margin: 0 0 22px; }
