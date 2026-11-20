@@ -210,8 +210,35 @@ def guide(metas: dict) -> str:
             </table>
           </div>
 
+          <h2>Quick start for builders</h2>
+          <p>If Volta has asked you to build part of a customer project:</p>
+          <ol>
+            <li><strong>Install the skills</strong> (below) and open your agent tool in the project's repository.</li>
+            <li><strong>Fill in the solution brief.</strong> Run <code>/solution-brief</code> in Guide mode on the brief Volta sends you, and send back the file it saves.</li>
+            <li><strong>Wait for the 1.0 brief.</strong> Volta reviews it and sends you the approved copy. Each of its increments becomes one piece of work.</li>
+            <li><strong>Write the product contract.</strong> Run <code>/scope</code> on one increment. It writes what must be true when you're done onto a GitHub issue.</li>
+            <li><strong>Write the delivery contract.</strong> Run <code>/document</code> on that issue. It adds how you'll build it and how each requirement will be proved.</li>
+            <li><strong>Build it.</strong> Run <code>/orchestrate</code>. It runs builder agents, checks their proof and comes back to you only for decisions.</li>
+            <li><strong>Ship it.</strong> Run <code>/ship-it</code>. It commits, opens and merges the pull request, and confirms the change works in production.</li>
+          </ol>
+          <p>To see what a finished issue looks like after steps 4 and 5, read the {link(f"{REPO_URL}/blob/main/examples/worked-example.md", "worked example")}.</p>
+          <div class="notice"><strong>Good to know</strong><p><code>/ship-it</code> merges the pull request itself once its checks pass. If the repository has no required reviews and you don't administer it, it tells you and asks before merging. Agree with the customer how changes get reviewed before you use it on their repository.</p></div>
+
           <h2>Install</h2>
-          <p>Unzip into your agent tool's skills folder, keeping the skill folders side by side: <code>~/.claude/skills/</code> for every project in Claude Code, or <code>.claude/skills/</code> inside one repository. Installing the full set is simplest, because several skills use files that ship with another one.</p>
+          <p>Download the full set and unzip it into your agent tool's skills folder, keeping the skill folders side by side. Several skills use files that ship with another one, so install all eight.</p>
+          <div class="table-wrap">
+            <table>
+              <thead><tr><th scope="col">Tool</th><th scope="col">Every project</th><th scope="col">One repository</th></tr></thead>
+              <tbody>
+                <tr><th scope="row">Claude Code</th><td><code>~/.claude/skills/</code></td><td><code>.claude/skills/</code></td></tr>
+                <tr><th scope="row">Codex</th><td><code>~/.agents/skills/</code> (older versions: <code>~/.codex/skills/</code>)</td><td><code>.agents/skills/</code></td></tr>
+                <tr><th scope="row">Cursor</th><td><code>~/.cursor/skills/</code></td><td><code>.cursor/skills/</code></td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <h2>Staying up to date</h2>
+          <p>On {link(REPO_URL, "GitHub")}, choose <strong>Watch → Custom → Releases</strong> to hear about new versions. The simplest way to stay current is to clone the repository once, link its skill folders into your tool's skills folder, and run <code>git pull</code> to update. The {link(f"{REPO_URL}#staying-up-to-date", "README")} has the two commands.</p>
 
           <h2>What you need</h2>
           <ul>

@@ -1,6 +1,6 @@
 ---
 name: scope
-version: 1.0.0
+version: 1.1.0
 description: "Define or refine product scope before technical planning. Use whenever the user wants to shape a feature, write a PRD or product brief, turn feedback into a product contract on a GitHub issue, decide whether work is light or full, pressure-test a product change, or invokes /scope. Separately locks the original outcome, named milestone, user experience, adjacent behavior, and proportionate risk posture; requires an approved low- or high-fidelity artifact for material experience changes; and blocks technical planning while those decisions remain open. Use the `grill` modifier when the user asks to be challenged, invokes /feature-forge (if installed), or the work has material ambiguity or risk. Does not choose implementation details or write the delivery contract."
 ---
 
@@ -223,12 +223,15 @@ whole repository.
    it as evidence of the current product commitment and carry it into the product contract;
    otherwise skip this step. Do not write to Linear; it is no longer a system of record for
    product scope.
-8. For Volta customer work, read the project's Solution Brief from its context map link with the
-   Artifact tool. It must be at 1.0; if it is missing or still a draft, stop and recommend
-   `/solution-brief`. A builder without a Solution Brief (no Volta systems, or not Volta customer
-   work) skips this step and proceeds from the user's own description of the outcome. Scope one of its increments: carry its target metric into Outcome, its
-   constraints into Risk posture and Relies on, and link it under Source links. Do not reopen the
-   chosen approach here; if scoping shows the approach is wrong, return it to `/solution-brief`.
+8. For Volta customer work, read the project's Solution Brief at 1.0: if you have Volta's
+   systems, from its context map link with the Artifact tool; otherwise from the 1.0 file or link
+   Volta sent. If it is not at 1.0 or can't be found, stop and ask for it, recommending
+   `/solution-brief`; do not scope without it. Work that is not Volta customer work (internal or
+   technical work, or a builder's own project) skips this step and proceeds from the user's own
+   description of the outcome. Scope one of the brief's increments: carry its target metric into
+   Outcome, its constraints into Risk posture and Relies on, and link it under Source links. Do
+   not reopen the chosen approach here; if scoping shows the approach is wrong, return it to
+   `/solution-brief`.
 9. Create or resume the draft package when the durable artifact boundary applies.
 
 Reading GitHub (and Linear, where available) is allowed. Creating or changing the product

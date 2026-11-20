@@ -1,6 +1,6 @@
 ---
 name: solution-brief
-version: 1.0.0
+version: 1.1.0
 description: Create, fill in, review or update a Volta Solution Brief, the internal page that sits between a customer-confirmed Problem Brief and /scope. Volta sets it up with the target and constraints, the assigned builder fills in how they'll solve it (options, approach, feasibility and usability risks, increments, verification) with this skill as a one-question-at-a-time guide that challenges but never hands them the answer, and Volta reviews it, rates value and viability risk, and approves it to 1.0 before any /scope run. Use whenever someone says "solution brief", "brief the builder", "hand this to a builder", "how are we going to solve this", "help me work out my approach", "review the builder's brief", or a problem brief is confirmed and work is about to be scoped, even if they don't name the skill. Also use to update a brief after a test result or a change in approach. Not for the customer-facing problem page (/problem-brief), product requirements (/scope), technical design (/document), or proposals with pricing (/generate-proposal).
 ---
 
@@ -130,6 +130,7 @@ Volta-only: needs Volta's systems (the Artifact tool, context maps, `/log`, `/pr
    - **Approve:** this needs every 1.0 condition. Write `Approved <date>` under the Volta owner, set the version to `1.0`, and run the check until it passes.
 5. Publish with the Artifact tool as a private page, icon `document`. Add a row to the live pages table in the project's `context-map.md` (page name, link, what it holds, "Use `/solution-brief` to update"). Record it with `/log`. Don't commit unless the user asks.
 6. Hand back the link, what stands between the brief and 1.0 (including the problem brief's status), and one next step. After approval, that step is `/scope` on increment 1, linking the brief.
+7. Once the brief is at 1.0, send the builder a copy they can open, because they can't open the private page: the approved 1.0 HTML file, or a docs.voltaeffect.com review copy made with `/doc` where Volta uses it. Tell them this copy is what `/scope` reads.
 
 ## Update
 

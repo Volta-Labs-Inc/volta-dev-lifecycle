@@ -1,12 +1,15 @@
 ---
 name: ship-it
-version: 1.0.0
+version: 1.1.0
 description: "Use when the user asks to ship completed local code changes: verify branch safety, run build/tests, select the commit file scope automatically, draft the commit message, update changelog when appropriate, push the branch, create a GitHub PR, automatically merge conflict-free PRs without bypassing required checks, clean up the merged branch, record live production verification on the GitHub issue, and end with an explicit verdict on whether the session is safe to archive. Do not use for reviewing or editing this skill itself."
 ---
 
 # /ship-it - Commit, Push, Create PR, and Merge
 
-Ship your completed work with proper commits, PR creation, and cleanup guidance. Every run ends
+Ship your completed work with proper commits, PR creation, and cleanup guidance. Once checks
+pass, it merges the pull request into the default branch itself; if that branch has no required
+reviews or checks and the user doesn't administer the repository, it says so and asks before
+merging (Step 11). Every run ends
 by telling the user, in one line, whether this session is safe to archive (Step 16).
 
 ## Usage
@@ -147,7 +150,7 @@ git ls-files --others --exclude-standard
 # The security gate below runs on THIS diff. Work committed in an earlier session is
 # invisible to `git diff HEAD` and must not escape the gate.
 default_branch=$(git symbolic-ref --short refs/remotes/origin/HEAD 2>/dev/null | sed 's|^origin/||')
-[ -n "$default_branch" ] || default_branch=main
+[ -n "$default_branch" ] || default_branch=$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name)
 git diff "$(git merge-base "origin/$default_branch" HEAD)" --stat
 git diff "$(git merge-base "origin/$default_branch" HEAD)"
 ```
@@ -420,15 +423,32 @@ gh pr view "$PR_URL" --json number,url,state,mergeable,mergeStateStatus,statusCh
 
 - If `mergeable` is `CONFLICTING`, STOP and report the conflict. Do not merge.
 - If `mergeable` is `UNKNOWN`, re-check briefly until GitHub resolves it. If it remains unknown, STOP and report that mergeability could not be confirmed.
-- If `mergeable` is `MERGEABLE`, enable GitHub auto-merge using the repository's normal merge strategy:
+- If `mergeable` is `MERGEABLE`, check whether the target branch requires anything before a merge:
 
 ```bash
-gh pr merge "$PR_URL" --auto --merge
+gh api "repos/{owner}/{repo}/branches/$default_branch/protection" 2>/dev/null \
+  | jq '{reviews: .required_pull_request_reviews.required_approving_review_count, checks: .required_status_checks.contexts}'
+gh api "repos/{owner}/{repo}/rules/branches/$default_branch" --jq '[.[].type]' 2>/dev/null  # rulesets
+```
+
+If neither shows a required review or a required check (including when the calls fail), nothing on GitHub stops unreviewed changes going straight into the default branch. Unless the user already said to merge, or administers the repository (`gh repo view --json viewerPermission -q .viewerPermission` prints `ADMIN`, so the branch rules are theirs to set), tell them that and ask one question: merge now, or leave the PR open for review? If they choose to leave it open, set `MERGE_STATUS = BLOCKED` (reason: left open for review at the user's request) and continue; Step 12 defers cleanup as for any unmerged PR.
+
+Pick the merge method the repository allows, preferring merge, then squash, then rebase:
+
+```bash
+gh repo view --json mergeCommitAllowed,squashMergeAllowed,rebaseMergeAllowed
+# MERGE_FLAG is --merge, --squash or --rebase: the first one allowed
+```
+
+Enable GitHub auto-merge with that method:
+
+```bash
+gh pr merge "$PR_URL" --auto "$MERGE_FLAG"
 ```
 
 This merges immediately when requirements are already satisfied, or waits for required checks and reviews. Never use `--admin`, bypass branch protection, or merge a conflicting PR.
 
-If auto-merge is unavailable, run `gh pr merge "$PR_URL" --merge` only when the PR is conflict-free and every required check has passed. Otherwise STOP and report the unmet requirement.
+If auto-merge is unavailable, run `gh pr merge "$PR_URL" "$MERGE_FLAG"` only when the PR is conflict-free and every required check has passed. Otherwise STOP and report the unmet requirement.
 
 **Wait for the merge to land before concluding.** When a repository has no required checks — the common case — the merge completes within seconds, but GitHub often still reports `OPEN` on an immediate read. Concluding from that first read would defer the cleanup that Step 12 exists to perform. Poll briefly instead:
 

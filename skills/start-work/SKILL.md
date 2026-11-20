@@ -1,6 +1,6 @@
 ---
 name: start-work
-version: 1.0.0
+version: 1.0.1
 description: "Start and complete work on a GitHub delivery issue end to end. Use when the user invokes /start-work or when an /orchestrate worker runs it; route a general request to implement an approved issue to /orchestrate. It will: preserve existing work, load the issue's product contract (or the legacy Linear scope it links), confirm the delivery contract is current against it, prepare or resume the issue branch, implement each requirement test-first where behavior changes, run the defined frontend, backend, data, and runtime proof, and confirm the result locally."
 ---
 
@@ -52,7 +52,7 @@ First identify the repository, its default branch, and its remote:
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 REPO_PARENT="$(dirname "$REPO_ROOT")"
 DEFAULT_BRANCH="$(git symbolic-ref --quiet --short refs/remotes/origin/HEAD 2>/dev/null | sed 's#^origin/##')"
-[ -n "$DEFAULT_BRANCH" ] || DEFAULT_BRANCH=main
+[ -n "$DEFAULT_BRANCH" ] || DEFAULT_BRANCH="$(gh repo view --json defaultBranchRef -q .defaultBranchRef.name)"
 ORIGIN_URL="$(git remote get-url origin 2>/dev/null || true)"
 ```
 
@@ -388,7 +388,7 @@ Make branch setup idempotent:
 
 1. If the current clean branch already matches the issue number, reuse it.
 2. Otherwise, if a local branch for the issue already exists, check it out and resume it.
-3. Otherwise, check out `main`, pull `origin main` using a fast-forward-safe update, and create the issue branch.
+3. Otherwise, check out the repository's default branch (`$DEFAULT_BRANCH`, which is not always `main`), pull it from `origin` using a fast-forward-safe update, and create the issue branch.
 4. Never reset or recreate an existing issue branch just to make the workflow look fresh.
 5. Preserve commits already made on the issue branch.
 

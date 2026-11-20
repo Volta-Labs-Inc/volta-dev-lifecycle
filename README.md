@@ -4,6 +4,22 @@ Eight agent skills that take a piece of customer work from an agreed problem to 
 
 The guide, with a plain-English description, version and download link for each skill, is at https://docs.voltaeffect.com/builders/ai-development-lifecycle (built from `docs/index.html`).
 
+## Quick start for builders
+
+If Volta has asked you to build part of a customer project:
+
+1. **Install the skills** (see Install below) and open your agent tool in the project's repository.
+2. **Fill in the solution brief.** Volta sends you a brief to complete. Run `/solution-brief` and choose Guide mode; it walks you through it and saves a file you send back to Volta.
+3. **Wait for the 1.0 brief.** Volta reviews it and sends you the approved 1.0 copy. Each of its increments becomes one piece of work.
+4. **Write the product contract.** Run `/scope` on one increment. It reads the 1.0 brief and writes what must be true when you're done onto a GitHub issue.
+5. **Write the delivery contract.** Run `/document` on that issue. It adds how you'll build it and how each requirement will be proved.
+6. **Build it.** Run `/orchestrate` on the issue. It runs builder agents, checks their proof itself and comes back to you only for decisions.
+7. **Ship it.** Run `/ship-it`. It commits, opens and merges the pull request, and confirms the change works in production.
+
+Use `/grill-me` at any point to pressure-test a plan. To see what a finished issue looks like after steps 4 and 5, read [`examples/worked-example.md`](examples/worked-example.md).
+
+**Good to know:** `/ship-it` merges the pull request itself once its checks pass. If the repository has no required reviews and you don't administer it, it tells you so and asks before merging. Agree with the customer how changes get reviewed before you use it on their repository.
+
 ## The lifecycle
 
 Use them in this order. Each one hands its result to the next.
@@ -38,7 +54,28 @@ Optional, used only when your project has them: Supabase (extra database securit
 
 ## Install
 
-Copy all the skill folders, side by side, into your agent tool's skills directory: `~/.claude/skills/` for every project in Claude Code, or `.claude/skills/` inside one repository. Keep them together. `/document`, `/orchestrate` and `/start-work` find the contract script at `../scope/scripts/contract.py`, and `/start-work` and `/ship-it` read the database security standard inside `document/`. Scope drafts not yet on GitHub are kept in `~/.local/state/scope-drafts/` unless `SCOPE_DRAFTS_DIR` says otherwise.
+Download the full set from the [latest release](https://github.com/Volta-Labs-Inc/volta-dev-lifecycle/releases/latest) and unzip it into your agent tool's skills folder, keeping the skill folders side by side:
+
+| Tool | Every project | One repository |
+|---|---|---|
+| Claude Code | `~/.claude/skills/` | `.claude/skills/` |
+| Codex | `~/.agents/skills/` (older versions: `~/.codex/skills/`) | `.agents/skills/` |
+| Cursor | `~/.cursor/skills/` | `.cursor/skills/` |
+
+Keep them together. `/document`, `/orchestrate` and `/start-work` find the contract script at `../scope/scripts/contract.py`, and `/start-work` and `/ship-it` read the database security standard inside `document/`. Scope drafts not yet on GitHub are kept in `~/.local/state/scope-drafts/` unless `SCOPE_DRAFTS_DIR` says otherwise.
+
+## Staying up to date
+
+Click **Watch → Custom → Releases** on this repository to be told when a new version comes out. Each skill's `CHANGELOG.md` says what changed.
+
+The easiest way to stay current is to clone the repository once and link the skills into your tool's folder, then update with `git pull`:
+
+```bash
+git clone https://github.com/Volta-Labs-Inc/volta-dev-lifecycle.git ~/volta-dev-lifecycle
+for s in ~/volta-dev-lifecycle/skills/*/; do ln -s "$s" ~/.claude/skills/; done
+```
+
+Change `~/.claude/skills/` to your tool's folder from the table above. If you downloaded a zip instead, download the new one and replace the folders.
 
 ## Check it works
 
