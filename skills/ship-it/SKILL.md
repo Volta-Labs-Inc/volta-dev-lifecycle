@@ -1,6 +1,6 @@
 ---
 name: ship-it
-version: 1.1.0
+version: 1.0.0
 description: "Use when the user asks to ship completed local code changes: verify branch safety, run build/tests, select the commit file scope automatically, draft the commit message, update changelog when appropriate, push the branch, create a GitHub PR, automatically merge conflict-free PRs without bypassing required checks, clean up the merged branch, record live production verification on the GitHub issue, and end with an explicit verdict on whether the session is safe to archive. Do not use for reviewing or editing this skill itself."
 ---
 

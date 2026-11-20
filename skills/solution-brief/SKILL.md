@@ -1,6 +1,6 @@
 ---
 name: solution-brief
-version: 1.1.0
+version: 1.0.0
 description: Create, fill in, review or update a Volta Solution Brief, the internal page that sits between a customer-confirmed Problem Brief and /scope. Volta sets it up with the target and constraints, the assigned builder fills in how they'll solve it (options, approach, feasibility and usability risks, increments, verification) with this skill as a one-question-at-a-time guide that challenges but never hands them the answer, and Volta reviews it, rates value and viability risk, and approves it to 1.0 before any /scope run. Use whenever someone says "solution brief", "brief the builder", "hand this to a builder", "how are we going to solve this", "help me work out my approach", "review the builder's brief", or a problem brief is confirmed and work is about to be scoped, even if they don't name the skill. Also use to update a brief after a test result or a change in approach. Not for the customer-facing problem page (/problem-brief), product requirements (/scope), technical design (/document), or proposals with pricing (/generate-proposal).
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: scope
-version: 1.1.0
+version: 1.0.0
 description: "Define or refine product scope before technical planning. Use whenever the user wants to shape a feature, write a PRD or product brief, turn feedback into a product contract on a GitHub issue, decide whether work is light or full, pressure-test a product change, or invokes /scope. Separately locks the original outcome, named milestone, user experience, adjacent behavior, and proportionate risk posture; requires an approved low- or high-fidelity artifact for material experience changes; and blocks technical planning while those decisions remain open. Use the `grill` modifier when the user asks to be challenged, invokes /feature-forge (if installed), or the work has material ambiguity or risk. Does not choose implementation details or write the delivery contract."
 ---
 

@@ -1,6 +1,6 @@
 ---
 name: orchestrate
-version: 1.0.1
+version: 1.0.0
 description: "Orchestrate /start-work agents on a GitHub issue or epic, adversarially review their work, and be the user's single point of contact until it is verified. This is the default route for implementing an approved delivery contract. Use whenever the user invokes /orchestrate, asks to implement or build an approved issue, asks to orchestrate, delegate, fan out, or supervise implementation of an issue or epic, wants agents to do /start-work while someone checks their work, or says things like 'run this epic', 'have agents build #214 and check them', 'you manage the build, I only want to talk to you'. Sets a /goal from the issue's scope, spawns /start-work implementers, independently re-checks their proof for correctness and completeness, sends them back until the work is right, and stops at ready for /ship-it. Does not write product scope, write the delivery contract, or publish."
 ---
 

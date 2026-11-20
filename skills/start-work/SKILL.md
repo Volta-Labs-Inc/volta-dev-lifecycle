@@ -1,6 +1,6 @@
 ---
 name: start-work
-version: 1.0.1
+version: 1.0.0
 description: "Start and complete work on a GitHub delivery issue end to end. Use when the user invokes /start-work or when an /orchestrate worker runs it; route a general request to implement an approved issue to /orchestrate. It will: preserve existing work, load the issue's product contract (or the legacy Linear scope it links), confirm the delivery contract is current against it, prepare or resume the issue branch, implement each requirement test-first where behavior changes, run the defined frontend, backend, data, and runtime proof, and confirm the result locally."
 ---
 
