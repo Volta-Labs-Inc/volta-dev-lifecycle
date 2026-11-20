@@ -148,7 +148,7 @@ Volta-only: needs Volta's systems (the Artifact tool, context maps, `/log`, `/pr
 
 - Keep the template's styling, sections and order exactly. Change only the placeholders, and delete the template comments.
 - For gaps use `<span class="tbc">[short label]</span>`, or `TBD` for a person. Put attributions in `<span class="said">(Mark, 21 Oct)</span>`.
-- **Volta branding (Volta-only).** The template is deliberately plain. If you have Volta's systems (`$OUTWORKOS_ROOT/brand/apply_brand.py` exists), run `python3 "$OUTWORKOS_ROOT/brand/apply_brand.py" <file>` after the page check passes and before you publish or hand over the file. It adds Volta's wordmark, header line and accent colour, and the page check ignores it. Without Volta's systems, skip this: the plain page is the finished page.
+- **Volta branding (Volta-only).** The template is deliberately plain. If you have Volta's systems (Volta's `/doc` skill, with `$OUTWORKOS_ROOT/skills/doc/scripts/apply_brand.py`), run `python3 "$OUTWORKOS_ROOT/skills/doc/scripts/apply_brand.py" <file>` after the page check passes and before you publish or hand over the file. It adds Volta's wordmark, header line and accent colour, and the page check ignores it. Without Volta's systems, skip this: the plain page is the finished page.
 - `bash scripts/check_brief.sh <file>` checks the structure, the four options and the four risks, unfilled placeholders, the approach paragraph's length, the verification rows, and the 1.0 conditions. It can't judge whether the reasoning holds up, so read the page too.
 
 ## What this skill never does
