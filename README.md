@@ -33,7 +33,7 @@ Use them in this order. Each one hands its result to the next.
 | 5 | `/orchestrate` | Runs one or more `/start-work` builder agents, re-checks their proof independently, and is your single point of contact until the work is verified. |
 | – | `/start-work` | What each builder agent runs: builds against the contracts, test-first, and reports proof for every requirement. You rarely call it yourself. |
 | 6 | `/ship-it` | Security checks, commit, pull request, merge, branch cleanup, then confirms the change works in production. |
-| Helper | `/grill-me` | Interviews you one question at a time about a plan you already have and pushes back on weak answers. Use at any stage. |
+| Optional | `/grill-me` | Interviews you one question at a time about a plan you already have and pushes back on weak answers. Try it before `/scope` to test the solution brief's approach, before `/document` to challenge a risky technical approach, or whenever a decision feels shaky. Works in the Claude app too. |
 
 Both contracts live on the work's GitHub issue, as its first two sections. A small script that ships with the scope skill, `skills/scope/scripts/contract.py`, writes and reads them and fingerprints the product contract, so builders stop if it changed after the plan was made.
 

@@ -31,12 +31,12 @@ RELEASE_URL = f"https://github.com/{REPO}/releases/download/v{RELEASE_VERSION}"
 LIFECYCLE = [
     ("problem-brief", "1 · Problem", "Writes the one-page Problem Brief a customer confirms: the problem we propose to solve in a first quarter, how we will measure it and what done means. Volta-run.", []),
     ("solution-brief", "2 · Solution", "Records the approach we chose for that problem and why it beat the alternatives, what success means for the builder, the riskiest assumption and the increments to build. Its Guide mode works for any builder; set-up and review are Volta-run.", []),
-    ("grill-me", "Helper", "Interviews you one question at a time about a plan you already have, recommends an answer for each open decision and pushes back on weak ones. Use it at any stage.", []),
     ("scope", "3 · Scope", "Writes the product contract on the work's GitHub issue: the outcome, who it is for, the boundaries and numbered requirements. It says what, never how.", []),
     ("document", "4 · Plan", "Writes the delivery contract under it: how the change will be built, and the tests and checks that prove each requirement is met.", ["scope"]),
     ("orchestrate", "5 · Build", "Runs one or more builder agents on an approved issue, re-checks their proof independently, and is your single point of contact until the work is verified.", ["scope", "document", "start-work"]),
     ("start-work", "5 · Build", "What each builder agent runs: builds against the two contracts, test-first, and reports proof for every requirement. You rarely call it yourself.", ["scope", "document"]),
     ("ship-it", "6 · Ship", "Runs the security checks, commits, opens and merges the pull request, cleans up the branch, then confirms the change works in production.", ["document"]),
+    ("grill-me", "Optional", "Interviews you one question at a time about a plan you already have, recommends an answer for each open decision and pushes back on weak ones. Try it before /scope to test whether the solution brief's approach holds up, before /document to challenge a risky technical approach, or any time a decision feels shaky. It works in the Claude app too, with no install.", []),
 ]
 
 EXCLUDE_NAMES = {".DS_Store", "__pycache__", ".pytest_cache"}
@@ -197,7 +197,7 @@ def guide(metas: dict) -> str:
         <h1 id="doc-title">Volta AI Development Lifecycle</h1>
         <p class="subhead">Eight agent skills that take a piece of customer work from an agreed problem to a verified change in production. Version {e(RELEASE_VERSION)}.</p>
         <div class="copy">
-          <p>Each skill hands its result to the next, so use them in order: problem brief, solution brief, scope, document, orchestrate (which runs start-work for you), then ship it. Grill me is a helper you can bring in at any stage to stress-test a plan.</p>
+          <p>Each skill hands its result to the next, so use them in order: problem brief, solution brief, scope, document, orchestrate (which runs start-work for you), then ship it. Grill me is optional: bring it in whenever you want a plan stress-tested.</p>
           <p>{link(f"{RELEASE_URL}/{set_zip}", "Download all eight")} or browse the source on {link(REPO_URL, "GitHub")}.</p>
 
           <h2>The skills</h2>
