@@ -553,6 +553,8 @@ List under `Covers` only identifiers proven on the live system in full; one prov
 
 Post it whether the result is `VERIFIED` or `NOT_VERIFIED`; a `NOT_VERIFIED` comment names the missing gate so the next session knows what to check. Read the comment back (`gh issue view <issue-number> --comments`) and record `ISSUE_COMMENT = POSTED / FAILED / NO_ISSUE` (no closing issue was referenced). Do not comment on, close, or otherwise change any Linear record: that reconciliation no longer exists. If the issue still links a Linear identifier from before the product contract moved to GitHub, say so in the comment so the user can close it by hand.
 
+**Later live checks use the same format.** Sometimes a session, this one or a later one, finishes checks that an earlier `NOT_VERIFIED` or partly covered comment left open. It records them as a new `PRODUCTION VERIFICATION #<issue>` comment in the template above. Its `Covers` line lists every identifier now proven live, counting the earlier comments too. Do not record them in free prose, and do not edit an earlier comment. The progress bar and the next session read only the template's lines, so a result written any other way stays invisible and the issue looks unverified.
+
 Record `PRODUCTION_STATUS`, `PRODUCTION_ACCESS_STATUS`, and `ISSUE_COMMENT` for the final report.
 
 ### Step 14: Epic Context Check
