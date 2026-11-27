@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.1.0 (26 Nov 2026)
+
+- `/ship-it` 1.1.0 reviews each pull request before merging, fixes the defects it finds and gets the checks green, and asks you about choices the scope leaves open.
+- Also released here: changes made since v1.0.0 to `/problem-brief`, `/solution-brief` and `/scope` (branding step for Volta's own copies, a misreading review for requirements and targets), plus agent instructions for this repository.
+
 ## v1.0.0 (19 Nov 2026)
 
 First release. This repository is the single place Volta's AI development lifecycle skills are edited and the place builders download them from.

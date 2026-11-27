@@ -1,13 +1,14 @@
 ---
 name: ship-it
-version: 1.0.0
-description: "Use when the user asks to ship completed local code changes: verify branch safety, run build/tests, select the commit file scope automatically, draft the commit message, update changelog when appropriate, push the branch, create a GitHub PR, automatically merge conflict-free PRs without bypassing required checks, clean up the merged branch, record live production verification on the GitHub issue, and end with an explicit verdict on whether the session is safe to archive. Do not use for reviewing or editing this skill itself."
+version: 1.1.0
+description: "Use when the user asks to ship completed local code changes: verify branch safety, run build/tests, select the commit file scope automatically, draft the commit message, update changelog when appropriate, push the branch, create a GitHub PR, review the PR and fix the defects the scope already decides, get its checks green, automatically merge conflict-free PRs without bypassing required checks, clean up the merged branch, record live production verification on the GitHub issue, and end with an explicit verdict on whether the session is safe to archive. Do not use for reviewing or editing this skill itself."
 ---
 
 # /ship-it - Commit, Push, Create PR, and Merge
 
-Ship your completed work with proper commits, PR creation, and cleanup guidance. Once checks
-pass, it merges the pull request into the default branch itself; if that branch has no required
+Ship your completed work with proper commits, PR creation, and cleanup guidance. Before merging,
+it reviews the pull request, fixes the defects it finds and gets the checks green, and asks you
+about any choice the scope leaves open (Step 10A). Once checks pass, it merges the pull request into the default branch itself; if that branch has no required
 reviews or checks and the user doesn't administer the repository, it says so and asks before
 merging (Step 11). Every run ends
 by telling the user, in one line, whether this session is safe to archive (Step 16).
@@ -63,7 +64,7 @@ absence as no PR; an authentication or network error is not permission to create
 |---|---|
 | Uncommitted issue work, with no merged PR for this branch | Steps 2–11; reuse an existing open PR if present. |
 | Clean issue scope with unshipped commits, no PR | Steps 2–7 to inspect the full branch and verify it; skip an empty commit, push if needed, then create the PR. |
-| Open PR, including a clean working tree | Steps 2–7 to establish the current scope and proof; commit/push only new issue work, reuse the PR, then resume Step 11. |
+| Open PR, including a clean working tree | Steps 2–7 to establish the current scope and proof; commit/push only new issue work, reuse the PR, then resume Step 10A. |
 | Merged PR, no new issue work or post-merge commits | Cleanup-only re-entry below. |
 | Merged PR with new issue work or post-merge commits | Preserve it and report that it needs a new branch; do not ship it through the merged PR or classify it as cleanup-only. |
 | No issue work, unshipped commits, or resumable PR | Report nothing to ship. |
@@ -413,7 +414,76 @@ gh pr create \
   --base "$default_branch"
 ```
 
+### Step 10A: Review the Pull Request and Fix What It Finds
+
+Before anything merges, review the change as it stands on the pull request, fix the problems
+the approved scope already decides, and get its checks green. This is the same loop Claude
+Code's typed `/ship` command runs, done inside `/ship-it` so one command still carries the work
+to production. `/ship-it` cannot start `/ship` (Claude Code only starts it from a line the user
+types); never run both on the same pull request, since both push to the branch.
+
+Skip this step on the cleanup-only re-entry. On a resumed PR that already has GitHub auto-merge
+enabled from an earlier run, turn it off first (`gh pr merge "$PR_URL" --disable-auto`) so
+nothing merges mid-review; Step 11 turns it back on.
+
+**1. Review.** Review the pull request's diff against its base (`gh pr diff "$PR_URL"`) for
+correctness bugs: wrong results, broken edge cases, missed requirements from the issue, and
+tests that do not prove what they claim. In Claude Code, run the built-in `/code-review` skill
+at `high` effort on the branch (`/code-review high <base>...HEAD`); elsewhere, do the review
+yourself with the same focus. Confirm each finding before acting on it: run the failing case or
+read the failing check's log. An unconfirmed suspicion is a note, not a fix.
+
+**2. Sort each confirmed finding by one bar: does the approved scope already say what is right?**
+
+| Finding | Action |
+|---|---|
+| A defect the issue's requirements, acceptance examples or plain intent already decide (the code does the wrong thing) | Fix it |
+| Thin tests, a misleading name or a misplaced line, inside the changed lines | Fix it when the fix is small; otherwise note it |
+| A choice the scope does not make, where either answer changes what users get (rounding rules, rejecting versus clamping input, a new limit) | Do not decide it. Ask the user one question with your recommended answer and its reason. The merge waits for the answer |
+| Anything else (style preference, a larger refactor, work outside the issue) | Note it; it does not block |
+
+**3. Fix.** Fix behaviour test-first: a test that fails for the finding, then the change that
+makes it pass. Stay inside the issue's scope. Re-run Step 7's build and tests, re-run the
+Step 5 security gate if a fix touches anything on its trigger list, then commit and push to the
+same branch (`git push origin "$current_branch"`). Never force-push.
+
+**4. Checks.** When the repository runs checks on pull requests, wait for those on the new head
+commit, running this with a 10-minute time limit on the command:
+
+```bash
+gh pr checks "$PR_URL" --watch --fail-fast --interval 20
+```
+
+Checks still running after 10 minutes are left to Step 11, whose auto-merge waits for required
+checks; say so in the report.
+
+A failure caused by this change is a finding: read its log (`gh run view <run-id> --log-failed`),
+then fix and push as in step 3. A failure that is clearly not this change (a runner outage, a
+flaky network call) gets one re-run (`gh run rerun <run-id> --failed`). A repository with no
+checks skips this wait.
+
+**5. Budget: two fix rounds.** One round is a push of fixes and the checks that follow it.
+Findings still open after two rounds do not buy a third: a defect still present is a stop
+(`REVIEW_STATUS = BLOCKED`, no merge, report what fails and why); anything else is recorded in
+the comment below and the work proceeds.
+
+**6. Record it on the pull request.** Post one comment summarising the review: each finding with
+its file and line, `Fixed in <commit>` or `Left:` with the reason, and any question waiting on
+the user. Read it back (`gh pr view "$PR_URL" --comments`). Update the PR description's Test
+Plan when fixes changed what was tested.
+
+Record `REVIEW_STATUS`:
+
+- `CLEAN` — no confirmed findings, checks green or none.
+- `FIXED` — every finding that blocks was fixed, checks green or none; notes may remain.
+- `WAITING` — a question is with the user. Do not merge; Step 11 sets `MERGE_STATUS = BLOCKED`
+  (reason: waiting on the user's answer). Re-running `/ship-it` after the answer resumes here.
+- `BLOCKED` — a defect or failing check survived two rounds. Do not merge.
+
 ### Step 11: Merge Conflict-Free Pull Request
+
+Merge only when `REVIEW_STATUS` is `CLEAN` or `FIXED`. Otherwise set `MERGE_STATUS = BLOCKED`
+with the review's reason and continue to Step 12, which defers cleanup.
 
 Inspect the PR after creation:
 
@@ -601,6 +671,7 @@ Status:
   Commit:    [commit-hash, or "not run (cleanup-only re-entry)"]
   Changelog: [Updated/Skipped, or "not run (cleanup-only re-entry)"]
   Security:  [PASS / N-A / WAIVED, or "not run (cleanup-only re-entry)"]
+  Review:    [CLEAN / FIXED (n fixed, n noted) / WAITING / BLOCKED, or "not run (cleanup-only re-entry)"]
   Production:[VERIFIED / NOT VERIFIED]
   Access:    [CLEAN / INCIDENT / NOT_RUN / N-A]
   Issue:     [verification comment POSTED on #N / FAILED / NO_ISSUE]
@@ -648,6 +719,7 @@ Status:
   Commit:    [commit-hash, or "not run (cleanup-only re-entry)"]
   Changelog: [Updated/Skipped, or "not run (cleanup-only re-entry)"]
   Security:  [PASS / N-A / WAIVED, or "not run (cleanup-only re-entry)"]
+  Review:    [CLEAN / FIXED (n fixed, n noted) / WAITING / BLOCKED, or "not run (cleanup-only re-entry)"]
   Production:[VERIFIED / NOT VERIFIED]
   Access:    [CLEAN / INCIDENT / NOT_RUN / N-A]
   Issue:     [verification comment POSTED on #N / FAILED / NO_ISSUE]
@@ -762,6 +834,8 @@ Do not archive the session yourself. The line tells the user it is safe; archivi
 | Unexpected files staged | Unstage, show corrected staged diff, continue with the intended set |
 | Push rejected | Fetch, explain branch state, ask before rebase or force-with-lease |
 | PR creation fails | Show error, provide manual steps |
+| Review finds a choice the scope does not make | Ask the user one question with a recommended answer; do not merge until answered (`REVIEW_STATUS = WAITING`) |
+| A defect or failing check survives two fix rounds | STOP before merging (`REVIEW_STATUS = BLOCKED`); report what fails and why |
 | Merge conflicts | STOP, report the conflicting PR, and do not merge |
 | Required checks block merge | Leave auto-merge enabled when possible; otherwise report the unmet check |
 | CHANGELOG.md malformed | Show error, ask user to fix manually |
@@ -793,6 +867,7 @@ Do not archive the session yourself. The line tells the user it is safe; archivi
 - Does not pause for routine commit-scope approval when `/ship-it` was invoked — report the selected files and continue
 - Does not stage secrets, `.env.local`, or clearly unrelated dirty files without an explicit user decision when ownership is ambiguous
 - Does not bypass merge conflicts, required checks, reviews, or branch protection
+- Does not decide behaviour the approved scope leaves open; review findings that need such a choice go to the user
 - Does not force changelog entries for non-user-facing changes
 - Does not treat a deployment, local run, preview, or historical tracker comment as current production verification
 - Does not touch Linear: no comments, state changes, or links on Linear records. Release evidence goes to the GitHub issue
@@ -807,7 +882,8 @@ Do not archive the session yourself. The line tells the user it is safe; archivi
                         #        and the orchestrator re-checks their proof
 [... do your work ...]
 [... verify it works ...]
-/ship-it               # End: commits, pushes, creates PR, merges if conflict-free,
+/ship-it               # End: commits, pushes, creates PR, reviews it and fixes what
+                        #      it finds until checks are green, merges if conflict-free,
                         #      and — once merged — deletes the branch (local + origin),
                         #      removes the worktree if the work was done in one, and
                         #      returns to a fresh default branch (the campsite phase),
